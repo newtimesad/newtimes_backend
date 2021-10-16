@@ -78,4 +78,13 @@ class State extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Country::className(), ['id' => 'country_id']);
     }
+
+    public function extraFields()
+    {
+        $extraFields = parent::extraFields();
+
+        $extraFields[] = 'cities';
+
+        return $extraFields;
+    }
 }
