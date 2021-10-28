@@ -64,4 +64,14 @@ class Country extends \yii\db\ActiveRecord
     {
         return $this->hasMany(State::className(), ['country_id' => 'id']);
     }
+
+    public function extraFields()
+    {
+        $extraFields = parent::extraFields();
+
+        $extraFields[] = 'states';
+
+        return $extraFields;
+    }
+
 }

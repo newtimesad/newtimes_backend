@@ -53,7 +53,7 @@ class Service extends \yii\db\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getCityServices()
+    public function getCities()
     {
         return $this->hasMany(City::className(), ['id' => 'city_id'])
             ->viaTable('city_service', ['service_id' => 'id']);
@@ -68,4 +68,5 @@ class Service extends \yii\db\ActiveRecord
     {
         return $this->hasMany(PostService::className(), ['service_id' => 'id']);
     }
+
 }
