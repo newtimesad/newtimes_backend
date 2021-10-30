@@ -81,7 +81,8 @@ return [
                     'controller' => 'v1/user',
                     'pluralize' => false,
                     'extraPatterns' => [
-                        'POST login' => 'login'
+                        'POST login' => 'login',
+                        'POST signup' => 'signup'
                     ]
                 ],
                 [
