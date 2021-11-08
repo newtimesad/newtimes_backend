@@ -46,7 +46,7 @@ class PostType extends \yii\db\ActiveRecord
         return [
             'id' => Yii::t('app', 'ID'),
             'name' => Yii::t('app', 'Name'),
-            'range' => Yii::t('app', 'Range'),
+            'range' => Yii::t('app', 'Range (days)'),
             'price' => Yii::t('app', 'Price'),
         ];
     }

@@ -37,6 +37,7 @@ class Country extends \yii\db\ActiveRecord
             [['code_2'], 'string', 'max' => 2],
             [['code_3'], 'string', 'max' => 3],
             [['longitude', 'latitude'], 'string', 'max' => 12],
+            [['name'], 'unique']
         ];
     }
 

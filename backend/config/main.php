@@ -1,4 +1,8 @@
 <?php
+
+use backend\controllers\user\SecurityController;
+use Da\User\Controller\AdminController;
+
 $params = array_merge(
     require __DIR__ . '/../../common/config/params.php',
     require __DIR__ . '/../../common/config/params-local.php',
@@ -19,7 +23,14 @@ return [
                 'fromEmail' => $params['senderEmail'],
                 'reconfirmationMailSubject' => "Nuevo email en {$params['appName']}"
             ],
-
+            'controllerMap' => [
+                'admin' => [
+                    'class' => AdminController::class
+                ],
+                'security' => [
+                    'class' => SecurityController::class
+                ],
+            ],
 //            'enableEmailConfirmation' => false,
 //            'administrators' => ['administrator'],
             'administratorPermissionName' => 'admin',
@@ -74,6 +85,21 @@ return [
             'rules' => [
 // ...
             ],
+        ]
+    ],
+    'container' => [
+        'definitions' => [
+            \yii\grid\GridView::class => [
+                'tableOptions' => ['class' => 'table table-head-fixed text-nowrap table-hover'],
+                'layout' => '<div class="card"><div class="card-body table-responsive p-0">{items}</div><div class="card-footer">{pager}</div></div>',
+                'pager' => [
+                    'class' => \yii\widgets\LinkPager::class,
+                    'options' => ['class' => 'pagination pagination-sm m-0 float-right'],
+                    'linkContainerOptions' => ['class' => 'page-item'],
+                    'linkOptions' => ['class' => 'page-link', 'data-pjax-scrollto' => '1'],
+                    'disabledListItemSubTagOptions' => ['class' => 'page-link']
+                ]
+            ]
         ]
     ],
     'params' => $params,

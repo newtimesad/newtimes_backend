@@ -48,7 +48,7 @@ class Location extends \yii\db\ActiveRecord
             'id' => Yii::t('app', 'ID'),
             'price' => Yii::t('app', 'Price'),
             'name' => Yii::t('app', 'Name'),
-            'city_id' => Yii::t('app', 'City ID'),
+            'city_id' => Yii::t('app', 'City'),
         ];
     }
 

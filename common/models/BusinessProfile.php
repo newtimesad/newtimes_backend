@@ -114,9 +114,9 @@ class BusinessProfile extends \yii\db\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getKycs()
+    public function getKyc()
     {
-        return $this->hasMany(Kyc::className(), ['business_profile_id' => 'id']);
+        return $this->hasOne(Kyc::className(), ['business_profile_id' => 'id']);
     }
 
     /**

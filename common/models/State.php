@@ -40,6 +40,7 @@ class State extends \yii\db\ActiveRecord
             [['name', 'code_2', 'code_3'], 'string', 'max' => 255],
             [['longitude', 'latitude'], 'string', 'max' => 12],
             [['country_id'], 'exist', 'skipOnError' => true, 'targetClass' => Country::className(), 'targetAttribute' => ['country_id' => 'id']],
+            [['name'], 'unique', 'targetAttribute' => ['name', 'country_id'], 'message' => 'This state has been already added']
         ];
     }
 
