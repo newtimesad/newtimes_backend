@@ -2,98 +2,52 @@ version: '3.2'
 
 services:
 
-#  mysql:
-#    image: mysql:5.7
-#    environment:
-#      - MYSQL_ROOT_PASSWORD=verysecret
-#      - MYSQL_DATABASE=yii2advanced
-#      - MYSQL_USER=yii2advanced
-#      - MYSQL_PASSWORD=secret
-#    ports:
-#      - 33061:3306
-
-  #pgsql:
-  #  image: postgres:9.5
-  #  environment:
-  #    - POSTGRES_DB=yii2advanced
-  #    - POSTGRES_USER=yii2advanced
-  #    - POSTGRES_PASSWORD=secret
-
+  pgsql:
+    image: postgres:9.5
+    environment:
+      - POSTGRES_DB=newtimes
+      - POSTGRES_USER=newtimes
+      - POSTGRES_PASSWORD=newtimes
+    ports:
+      - 54321:5432
 
   api:
-    build: api
-#    ports:
-#      - 20080:80
+    depends_on:
+      - pgsql
+    container_name: api
     expose:
       - 80
+    restart: always
     volumes:
       # Re-use local composer cache via host-volume
       - ~/.composer-docker/cache:/root/.composer/cache:delegated
       # Mount source-code for development
       - ./:/app
       - ./docker/php/custom-config.ini:/usr/local/etc/php/conf.d/custom-config.ini
-    labels:
-      - "traefik.enable=true"
-
-      - "traefik.http.routers.apit.rule=Host(`api.lexuryscort.com`)"
-      - "traefik.http.routers.apit.entrypoints=http"
-      - "traefik.http.routers.apit.service=apit"
-      - "traefik.http.middlewares.apit-redirectscheme.redirectscheme.scheme=https"
-      - "traefik.http.middlewares.apit-redirectscheme.redirectscheme.permanent=false"
-      - "traefik.http.routers.apit.middlewares=apit-redirectscheme"
-
-      - "traefik.http.routers.apit-secure.rule=Host(`api.lexuryscort.com`)"
-      - "traefik.http.routers.apit-secure.entrypoints=https"
-      - "traefik.http.routers.apit-secure.service=apit"
-      - "traefik.http.routers.apit-secure.tls=true"
-      - "traefik.http.routers.apit-secure.tls.certresolver=letsencrypt"
-
-      - "traefik.http.services.apit.loadbalancer.server.port=80"
-      - "traefik.http.services.apit.loadbalancer.server.scheme=http"
-      - "traefik.http.services.apit.loadbalancer.passhostheader=true"
-    networks:
-      - lexuryscort
-      - frontproxynet
-
+      - ./docker/php/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
+    environment:
+      VIRTUAL_HOST: api.lexuryscort.com
+      PHP_ENABLE_XDEBUG: 1
 
   backend:
-    build: backend
-#    ports:
-#      - 21080:80
+    depends_on:
+      - pgsql
+    container_name: backend
     expose:
       - 80
+    restart: always
     volumes:
       # Re-use local composer cache via host-volume
       - ~/.composer-docker/cache:/root/.composer/cache:delegated
       # Mount source-code for development
       - ./:/app
       - ./docker/php/custom-config.ini:/usr/local/etc/php/conf.d/custom-config.ini
-    labels:
-      - "traefik.enable=true"
-
-      - "traefik.http.routers.backend.rule=Host(`backend.lexuryscort.com`)"
-      - "traefik.http.routers.backend.entrypoints=http"
-      - "traefik.http.routers.backend.service=backend"
-      - "traefik.http.middlewares.backend-redirectscheme.redirectscheme.scheme=https"
-      - "traefik.http.middlewares.backend-redirectscheme.redirectscheme.permanent=false"
-      - "traefik.http.routers.backend.middlewares=backend-redirectscheme"
-
-      - "traefik.http.routers.backend-secure.rule=Host(`backend.lexuryscort.com`)"
-      - "traefik.http.routers.backend-secure.entrypoints=https"
-      - "traefik.http.routers.backend-secure.service=backend"
-      - "traefik.http.routers.backend-secure.tls=true"
-      - "traefik.http.routers.backend-secure.tls.certresolver=letsencrypt"
-
-      - "traefik.http.services.backend.loadbalancer.server.port=80"
-      - "traefik.http.services.backend.loadbalancer.server.scheme=http"
-      - "traefik.http.services.backend.loadbalancer.passhostheader=true"
-    networks:
-      - lexuryscort
-      - frontproxynet
-
+      - ./docker/php/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
+    environment:
+      VIRTUAL_HOST: backend.lexuryscort.com
+      PHP_ENABLE_XDEBUG: 1
 
 networks:
-  lexuryscort:
-
-  frontproxynet:
-    external: true
+  default:
+    external:
+      name: nginx-proxy
