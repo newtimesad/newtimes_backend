@@ -31,13 +31,15 @@ return [
                     'class' => SecurityController::class
                 ],
             ],
-//            'enableEmailConfirmation' => false,
-//            'administrators' => ['administrator'],
+            'enableEmailConfirmation' => false,
+            'administrators' => ['administrator'],
             'administratorPermissionName' => 'admin',
             // ...other configs from here: [Configuration Options](installation/configuration-options.md), e.g.
             'generatePasswords' => true,
             'switchIdentitySessionKey' => 'myown_usuario_admin_user_key',
             'enableSwitchIdentities' => true,
+            'allowUnconfirmedEmailLogin' => true,
+            'enableGdprCompliance' => false
         ],
     ],
     'components' => [

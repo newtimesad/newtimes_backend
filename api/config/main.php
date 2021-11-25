@@ -124,6 +124,11 @@ return [
                 ],
                 [
                     'class' => 'yii\rest\UrlRule',
+                    'controller' => 'v1/post-type',
+                ],
+
+                [
+                    'class' => 'yii\rest\UrlRule',
                     'controller' => 'v1/speciality-category',
                 ],
 
