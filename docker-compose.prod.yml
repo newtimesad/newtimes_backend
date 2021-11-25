@@ -2,18 +2,18 @@ version: '3.2'
 
 services:
 
-  pgsql:
-    image: postgres:9.5
-    environment:
-      - POSTGRES_DB=newtimes
-      - POSTGRES_USER=newtimes
-      - POSTGRES_PASSWORD=newtimes
-    ports:
-      - 54321:5432
+#  pgsql:
+#    image: postgres:9.5
+#    environment:
+#      - POSTGRES_DB=newtimes
+#      - POSTGRES_USER=newtimes
+#      - POSTGRES_PASSWORD=newtimes
+#    ports:
+#      - 54321:5432
 
   api:
-    depends_on:
-      - pgsql
+#    depends_on:
+#      - pgsql
     container_name: api
     build: api
     expose:
@@ -31,8 +31,8 @@ services:
       PHP_ENABLE_XDEBUG: 1
 
   backend:
-    depends_on:
-      - pgsql
+#    depends_on:
+#      - pgsql
     container_name: backend
     build: backend
     expose:
