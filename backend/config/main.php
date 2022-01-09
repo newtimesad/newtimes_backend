@@ -18,7 +18,7 @@ return [
     'modules' => [
         'user' => [
             'class' => Da\User\Module::class,
-            'enableRegistration' => false,
+            'enableRegistration' => true,
             'mailParams' => [
                 'fromEmail' => $params['senderEmail'],
                 'reconfirmationMailSubject' => "Nuevo email en {$params['appName']}"
@@ -70,6 +70,12 @@ return [
 
         'assetManager' => [
             'class' => \yii\web\AssetManager::class,
+            'bundles' => [
+                'kartik\form\ActiveFormAsset' => [
+                    'bsDependencyEnabled' => false // do not load bootstrap assets for a specific asset bundle
+                ],
+            ],
+            'appendTimestamp' => true
         ],
 
         'view' => [

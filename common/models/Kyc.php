@@ -2,7 +2,9 @@
 
 namespace common\models;
 
+use daxslab\behaviors\UploaderBehavior;
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "kyc".
@@ -14,16 +16,37 @@ use Yii;
  * @property string|null $status
  * @property int|null $business_profile_id
  *
+ * @property-read string $documentPictureUrl
+ * @property-read string $selfPictureWithInfoUrl
+ * @property-read string $selfPictureUrl
  * @property BusinessProfile $businessProfile
  */
 class Kyc extends \yii\db\ActiveRecord
 {
+    const KYC_STATUS_SENT = 'sent';
+    const KYC_STATUS_ACCEPTED = 'accepted';
+    const KYC_STATUS_CANCELLED = 'cancelled';
+
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
         return 'kyc';
+    }
+
+    public function behaviors()
+    {
+        return ArrayHelper::merge(
+            parent::behaviors(),
+            [
+                [
+                    'class' => UploaderBehavior::class,
+                    'renamer' => UploaderBehavior::RENAME_RANDOM,
+                    'uploadPath' => '@backend/web/uploads'
+                ]
+            ]
+        );
     }
 
     /**
@@ -34,8 +57,17 @@ class Kyc extends \yii\db\ActiveRecord
         return [
             [['business_profile_id'], 'default', 'value' => null],
             [['business_profile_id'], 'integer'],
-            [['document_picture', 'self_picture', 'self_picture_with_doc', 'status'], 'string', 'max' => 255],
+            [[
+                'status'
+            ], 'string', 'on' => [self::KYC_STATUS_SENT, self::KYC_STATUS_ACCEPTED, self::KYC_STATUS_ACCEPTED],
+            ],
+            [['status'], 'default', 'value' => self::KYC_STATUS_SENT],
             [['business_profile_id'], 'exist', 'skipOnError' => true, 'targetClass' => BusinessProfile::className(), 'targetAttribute' => ['business_profile_id' => 'id']],
+            [[
+                'document_picture',
+                'self_picture',
+                'self_picture_with_doc'
+            ], 'image', 'skipOnEmpty' => true, 'extensions' => ['png', 'jpg', 'jpeg']]
         ];
     }
 
@@ -62,5 +94,57 @@ class Kyc extends \yii\db\ActiveRecord
     public function getBusinessProfile()
     {
         return $this->hasOne(BusinessProfile::className(), ['id' => 'business_profile_id']);
+    }
+
+    public static function getStatuses()
+    {
+        return [
+            self::KYC_STATUS_SENT => ucfirst(self::KYC_STATUS_SENT),
+            self::KYC_STATUS_ACCEPTED => ucfirst(self::KYC_STATUS_ACCEPTED),
+            self::KYC_STATUS_CANCELLED => ucfirst(self::KYC_STATUS_CANCELLED),
+        ];
+    }
+
+    public function getFormattedStatus()
+    {
+        return self::getStatuses()[$this->status];
+    }
+
+
+    public function getDocumentPictureUrl()
+    {
+        $host = Yii::$app->request->hostInfo;
+        return (isset($this->document_picture) and is_file(Yii::getAlias("@backend/web/uploads/{$this->document_picture}")))
+            ? $host . Yii::getAlias("@web/uploads/{$this->document_picture}")
+            : $host . Yii::getAlias("@web/img/no_user_picture.png");
+    }
+
+    public function getSelfPictureUrl()
+    {
+        $host = Yii::$app->request->hostInfo;
+        return (isset($this->self_picture) and is_file(Yii::getAlias("@backend/web/uploads/{$this->self_picture}")))
+            ? $host . Yii::getAlias("@web/uploads/{$this->self_picture}")
+            : $host . Yii::getAlias("@web/img/no_user_picture.png");
+    }
+
+    public function getSelfPictureWithInfoUrl()
+    {
+        $host = Yii::$app->request->hostInfo;
+        return (isset($this->self_picture_with_doc) and is_file(Yii::getAlias("@backend/web/uploads/{$this->self_picture_with_doc}")))
+            ? $host . Yii::getAlias("@web/uploads/{$this->self_picture_with_doc}")
+            : $host . Yii::getAlias("@web/img/no_user_picture.png");
+    }
+
+    public function beforeDelete()
+    {
+        if (!parent::beforeDelete()) {
+            return false;
+        }
+
+        @unlink(Yii::getAlias("@backend/web/uploads/{$this->document_picture}"));
+        @unlink(Yii::getAlias("@backend/web/uploads/{$this->self_picture}"));
+        @unlink(Yii::getAlias("@backend/web/uploads/{$this->self_picture_with_doc}"));
+
+        return true;
     }
 }

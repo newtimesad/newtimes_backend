@@ -9,7 +9,7 @@
  * the LICENSE file that was distributed with this source code.
  */
 
-use yii\bootstrap\Nav;
+use yii\bootstrap4\Nav;
 
 ?>
 
@@ -31,32 +31,18 @@ use yii\bootstrap\Nav;
             [
                 'label' => Yii::t('usuario', 'Permissions'),
                 'url' => ['/user/permission/index'],
+                'visible' => false
             ],
             [
                 'label' => Yii::t('usuario', 'Rules'),
                 'url' => ['/user/rule/index'],
+                'visible' => false
             ],
             [
-                'label' => Yii::t('usuario', 'Create'),
-                'items' => [
-                    [
-                        'label' => Yii::t('usuario', 'New user'),
-                        'url' => ['/user/admin/create'],
-                    ],
-                    [
-                        'label' => Yii::t('usuario', 'New role'),
-                        'url' => ['/user/role/create'],
-                    ],
-                    [
-                        'label' => Yii::t('usuario', 'New permission'),
-                        'url' => ['/user/permission/create'],
-                    ],
-                    [
-                        'label' => Yii::t('usuario', 'New rule'),
-                        'url' => ['/user/rule/create'],
-                    ],
-                ],
+                'label' => Yii::t('usuario', 'New user'),
+                'url' => ['/user/admin/create'],
             ],
+            
         ],
     ]
 ) ?>

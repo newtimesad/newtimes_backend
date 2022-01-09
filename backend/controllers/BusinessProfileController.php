@@ -2,18 +2,30 @@
 
 namespace backend\controllers;
 
+use common\models\Email;
+use common\models\Kyc;
+use common\models\Phone;
+use common\models\Picture;
+use common\models\SocialNetwork;
+use Da\User\Traits\ContainerAwareTrait;
+use Da\User\Validator\AjaxRequestModelValidator;
 use Yii;
 use common\models\BusinessProfile;
 use common\models\BusinessProfileSearch;
+use yii\data\Pagination;
+use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
 
 /**
  * BusinessProfileController implements the CRUD actions for BusinessProfile model.
  */
 class BusinessProfileController extends Controller
 {
+    use UserInfoTrait, ContainerAwareTrait;
+
     /**
      * {@inheritdoc}
      */
@@ -29,14 +41,6 @@ class BusinessProfileController extends Controller
         ];
     }
 
-    public function actions()
-    {
-        $actions = parent::actions();
-
-        unset($actions['create']);
-
-        return $actions;
-    }
 
     /**
      * Lists all BusinessProfile models.
@@ -47,9 +51,32 @@ class BusinessProfileController extends Controller
         $searchModel = new BusinessProfileSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
+        if(Yii::$app->user->can('client'))
+            $this->redirect(['business-profile/my-profiles']);
+        return $this->render('index/index_admin', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    public function actionMyProfiles()
+    {
+        $query = BusinessProfile::find()
+            ->where(['user_id' => $this->getUserId()]);
+        $count = $query->count();
+
+        $pages = new Pagination([
+            'totalCount' => $count,
+            'pageSize' => 10
+        ]);
+
+        $models = $query->offset($pages->offset)
+            ->limit($pages->limit)
+            ->all();
+
+        return $this->render('index/index_client', [
+            'profiles' => $models,
+            'pages' => $pages
         ]);
     }
 
@@ -73,15 +100,90 @@ class BusinessProfileController extends Controller
      */
     public function actionCreate()
     {
-        $model = new BusinessProfile();
+        $businessProfile = new BusinessProfile();
+        $businessProfile->user_id = $this->getUserId();
+        $post = Yii::$app->request->post();
+        $phone = new Phone();
+        $email = new Email();
+        $kyc = new Kyc();
+        $socialNetwork = new SocialNetwork();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        $this->make(
+            AjaxRequestModelValidator::class, [
+            $businessProfile,
+            $phone,
+            $email,
+            $kyc,
+            $socialNetwork
+        ])->validate();
+
+
+//        var_dump($_FILES);
+        $errors = [];
+        $transaction = Yii::$app->db->beginTransaction();
+        try {
+            if ($businessProfile->load($post) and $businessProfile->save()) {
+                $phone->business_profile_id = $businessProfile->id;
+                $email->business_profile_id = $businessProfile->id;
+                $kyc->business_profile_id = $businessProfile->id;
+                $socialNetwork->business_profile_id = $businessProfile->id;
+                if (!$phone->load($post) or !$phone->validate()) {
+                    $errors = array_merge($errors, $phone->errors);
+                }
+                if (!$email->load($post) or !$email->validate()) {
+                    $errors = array_merge($errors, $email->errors);
+                }
+                if (!$socialNetwork->load($post) or !$socialNetwork->validate()) {
+                    $errors = array_merge($errors, $socialNetwork->errors);
+                }
+                if (!$kyc->load($post) or !$kyc->validate()) {
+                    $errors = array_merge($errors, $kyc->errors);
+                }
+
+
+                $businessProfile->images = UploadedFile::getInstances($businessProfile, 'images');
+                if (!empty($businessProfile->images)) {
+                    foreach ($businessProfile->images as $image) {
+                        $img = new Picture();
+                        $img->name = uniqid("profile_{$businessProfile->id}_img") . '.' . $image->extension;
+                        $img->business_profile_id = $businessProfile->id;
+                        if ($img->save()) {
+                            $image->saveAs('@backend/web/uploads/' . $img->name, true);
+                        } else {
+                            var_dump($img->errors);
+                            $transaction->rollBack();
+                        }
+                    }
+                }
+
+                if (empty($errors)) {
+                    $phone->save(false);
+                    $email->save(false);
+                    $socialNetwork->save(false);
+                    $kyc->save(false);
+                } else {
+                    $transaction->rollBack();
+                }
+
+                $transaction->commit();
+                Yii::$app->session->setFlash('success', "The profile has been created, please, wait until your identity be verified");
+                return $this->redirect(['business-profile/update', 'id' => $businessProfile->id]);
+            } elseif ($businessProfile->hasErrors()) {
+                $transaction->rollBack();
+                var_dump($businessProfile->errors);
+            }
+        } catch (\Exception $e) {
+            $transaction->rollBack();
         }
 
         return $this->render('create', [
-            'model' => $model,
+            'model' => $businessProfile,
+            'phone' => $phone,
+            'email' => $email,
+            'kyc' => $kyc,
+            'socialNetwork' => $socialNetwork
         ]);
+
     }
 
     /**
@@ -94,13 +196,64 @@ class BusinessProfileController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $phone = $model->phone;
+        $email = $model->email;
+        $kyc = $model->kyc;
+        $socialNetwork = $model->socialNetwork;
+        $pictures = $model->pictures;
+        $post = Yii::$app->request->post();
+        $this->make(
+            AjaxRequestModelValidator::class, [
+            $model,
+            $phone,
+            $email,
+            $kyc,
+            $socialNetwork
+        ])->validate();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        $errors = [];
+        $transaction = Yii::$app->db->beginTransaction();
+        try {
+            if ($model->load($post) and $model->save()) {
+                if (!$phone->load($post) or !$phone->validate()) {
+                    $errors = array_merge($errors, $phone->errors);
+                }
+                if (!$email->load($post) or !$email->validate()) {
+                    $errors = array_merge($errors, $email->errors);
+                }
+                if (!$socialNetwork->load($post) or !$socialNetwork->validate()) {
+                    $errors = array_merge($errors, $socialNetwork->errors);
+                }
+                if (!$kyc->load($post) or !$kyc->validate()) {
+                    $errors = array_merge($errors, $kyc->errors);
+                }
+
+                if (empty($errors)) {
+                    $phone->save(false);
+                    $email->save(false);
+                    $socialNetwork->save(false);
+                    $kyc->save(false);
+                } else {
+                    $transaction->rollBack();
+                }
+
+                $transaction->commit();
+                Yii::$app->session->setFlash('success', "The profile has been created, please, wait until your identity be verified");
+                return $this->redirect(['business-profile/update', 'id' => $model->id]);
+            } elseif ($model->hasErrors()) {
+                $transaction->rollBack();
+                var_dump($model->errors);
+            }
+        } catch (\Exception $e) {
+            $transaction->rollBack();
         }
 
         return $this->render('update', [
             'model' => $model,
+            'phone' => $phone,
+            'email' => $email,
+            'kyc' => $kyc,
+            'socialNetwork' => $socialNetwork
         ]);
     }
 
@@ -132,5 +285,19 @@ class BusinessProfileController extends Controller
         }
 
         throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+    }
+
+    public function actionRemovePicture($id)
+    {
+        $lastUrl = Url::previous('before-delete-picture');
+
+        $picture = Picture::find()->where(['id' => $id])->one();
+        if (!$picture) {
+            Yii::$app->session->setFlash('danger', "Picture not found");
+        }
+
+        $picture->delete();
+        Yii::$app->session->setFlash('danger', "Picture removed");
+        return $this->redirect($lastUrl);
     }
 }

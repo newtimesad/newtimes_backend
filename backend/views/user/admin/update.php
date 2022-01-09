@@ -10,7 +10,7 @@
  */
 
 use Da\User\Model\User;
-use yii\bootstrap\Nav;
+use yii\bootstrap4\Nav;
 use yii\helpers\Html;
 use yii\web\View;
 
@@ -26,25 +26,17 @@ $this->params['breadcrumbs'][] = $this->title;
 
 ?>
 <div class="clearfix"></div>
-<?= $this->render(
-    '/shared/_alert',
-    [
-        'module' => Yii::$app->getModule('user'),
-    ]
-) ?>
+
 
 <div class="row">
     <div class="col-md-12">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title"><?= Html::encode($this->title) ?></h3>
-            </div>
-            <div class="panel-body">
+        <div class="card card-default">
+            <div class="card-body">
                 <?= $this->render('/shared/_menu') ?>
                 <div class="row">
                     <div class="col-md-3">
-                        <div class="panel panel-default">
-                            <div class="panel-body">
+                        <div class="card card-default">
+                            <div class="card-body">
                                 <?= Nav::widget(
                                     [
                                         'options' => [
@@ -126,8 +118,8 @@ $this->params['breadcrumbs'][] = $this->title;
                         </div>
                     </div>
                     <div class="col-md-9">
-                        <div class="panel panel-default">
-                            <div class="panel-body">
+                        <div class="card card-default">
+                            <div class="card-body">
                                 <?= $content ?>
                             </div>
                         </div>

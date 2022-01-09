@@ -1,5 +1,6 @@
 <?php
 return [
+    'bsDependencyEnabled' => false,
     'admin.username' => 'admin',
     'admin.email' => 'admin@newtimes.com',
     'admin.password' => 'admin.123',

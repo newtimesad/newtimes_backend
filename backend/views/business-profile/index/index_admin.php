@@ -1,8 +1,11 @@
 <?php
 
+use common\models\City;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
+
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\BusinessProfileSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -11,7 +14,6 @@ $this->title = Yii::t('app', 'Business Profiles');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="business-profile-index">
-
 
 
     <?php Pjax::begin(); ?>
@@ -23,7 +25,10 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'user.profile.name',
+            [
+                'attribute' => 'user.username',
+                'label' => "Client"
+            ],
             'name',
             'gender',
             'age',
@@ -36,11 +41,18 @@ $this->params['breadcrumbs'][] = $this->title;
 //            'available_to',
 //            'aviability',
             [
-                    'attribute' => 'city.name',
-                'label' => 'City'
+                'attribute' => 'city.name',
+                'label' => 'City',
+                'filter' => Html::activeDropDownList(
+                        $searchModel,
+                        'city_id',
+                        ArrayHelper::map(City::find()->all(), 'id', 'name'), [
+                        'class' => 'form-control',
+                            'prompt' => 'All'
+                ])
             ],
             [
-                'attribute' => 'kyc.status',
+                'attribute' => 'kyc.formattedStatus',
                 'label' => 'Status'
             ],
 

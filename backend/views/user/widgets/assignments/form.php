@@ -10,9 +10,9 @@
  */
 
 use dosamigos\selectize\SelectizeDropDownList;
-use yii\bootstrap\Alert;
+use yii\bootstrap4\Alert;
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use yii\bootstrap4\ActiveForm;
 
 /**
  * @var $this           yii\web\View
@@ -21,7 +21,6 @@ use yii\widgets\ActiveForm;
  */
 
 ?>
-
 <?php if ($model->updated): ?>
 
     <?= Alert::widget(

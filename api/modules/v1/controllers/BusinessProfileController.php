@@ -9,6 +9,8 @@ use common\models\Kyc;
 use common\models\Phone;
 use common\models\SocialNetwork;
 use common\models\StateSearch;
+use Da\User\Traits\ContainerAwareTrait;
+use Da\User\Validator\AjaxRequestModelValidator;
 use Yii;
 
 class BusinessProfileController extends BaseActiveController
@@ -42,6 +44,8 @@ class BusinessProfileController extends BaseActiveController
     {
         $businessProfile = new BusinessProfile();
         $post = Yii::$app->request->post();
+
+
         $errors = [];
         if($businessProfile->load($post, '') and $businessProfile->save()){
             $phone = new Phone([
@@ -70,12 +74,14 @@ class BusinessProfileController extends BaseActiveController
             }
 
             if(!empty($errors)){
-                $phone->save();
-                $email->save();
-                $socialNetwork->save();
-                $kyc->save();
-
+                $phone->save(false);
+                $email->save(false);
+                $socialNetwork->save(false);
+                $kyc->save(false);
             }
         }
+
+        return $businessProfile;
+
     }
 }

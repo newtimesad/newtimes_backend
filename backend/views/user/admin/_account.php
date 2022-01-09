@@ -9,7 +9,7 @@
  * the LICENSE file that was distributed with this source code.
  */
 
-use yii\bootstrap\ActiveForm;
+use yii\bootstrap4\ActiveForm;
 use yii\helpers\Html;
 
 /* @var yii\web\View $this */
@@ -36,7 +36,7 @@ use yii\helpers\Html;
 
 <div class="form-group">
     <div class="col-lg-offset-3 col-lg-9">
-        <?= Html::submitButton(Yii::t('usuario', 'Update'), ['class' => 'btn btn-block btn-success']) ?>
+        <?= Html::submitButton(Yii::t('usuario', 'Update'), ['class' => 'btn btn-md btn-success']) ?>
     </div>
 </div>
 
