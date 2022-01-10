@@ -153,7 +153,19 @@ class Menu
                     'class' => 'nav-item'
                 ]
             ],
-
+            [
+                'label' => Yii::t(
+                    'app',
+                    '{icon} <p>Posts</p>',
+                    ['icon' => FAS::icon(FAS::_SHIELD_ALT)]
+                ),
+                //                    ['icon' => Html::tag('i', null, ['class' => 'far fa-circle nav-icon'])]),
+                'url' => ['//post/index'],
+                'action' => '/post/index',
+                'options' => [
+                    'class' => 'nav-item'
+                ]
+            ],
             [
                 'label' => Yii::t(
                     'app',
@@ -178,7 +190,20 @@ class Menu
     public static function getClientItems()
     {
         return [
+            [
+                'label' => Yii::t(
+                    'app',
+                    '{icon} <p>Posts</p>',
+                    ['icon' => FAS::icon(FAS::_SHIELD_ALT)]
+                ),
+                //                    ['icon' => Html::tag('i', null, ['class' => 'far fa-circle nav-icon'])]),
+                'url' => ['//post/my-posts'],
+                'action' => '/post/my-posts',
 
+                'options' => [
+                    'class' => 'nav-item'
+                ]
+            ],
             [
                 'label' => Yii::t(
                     'app',

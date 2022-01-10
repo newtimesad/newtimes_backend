@@ -60,6 +60,9 @@ $this->params['breadcrumbs'][] = $this->title;
                     </span>
                 </div>
                 <div class="card-body">
+                    <div class="text-center">
+                        <h3>CODE: <strong><?= $model->code ?></strong></h3>
+                    </div>
                     <div class="row">
                         <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
                             <?= Html::img($model->documentPictureUrl, [

@@ -15,8 +15,6 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 
 ?>
 <div class="business-profile-update">
-
-
     <?= $this->render('_form', [
         'model' => $model,
         'phone' => $phone,

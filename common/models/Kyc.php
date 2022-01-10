@@ -19,7 +19,9 @@ use yii\helpers\ArrayHelper;
  * @property-read string $documentPictureUrl
  * @property-read string $selfPictureWithInfoUrl
  * @property-read string $selfPictureUrl
+ * @property-read mixed $formattedStatus
  * @property BusinessProfile $businessProfile
+ * @property string $code [varchar(6)]
  */
 class Kyc extends \yii\db\ActiveRecord
 {
@@ -49,12 +51,23 @@ class Kyc extends \yii\db\ActiveRecord
         );
     }
 
+    public function __construct($config = [])
+    {
+        parent::__construct($config);
+        $this->code = strtoupper(substr(uniqid(), '-6'));
+    }
+
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
+            [[
+                'document_picture',
+                'self_picture',
+                'self_picture_with_doc'
+            ], 'required'],
             [['business_profile_id'], 'default', 'value' => null],
             [['business_profile_id'], 'integer'],
             [[
@@ -67,7 +80,9 @@ class Kyc extends \yii\db\ActiveRecord
                 'document_picture',
                 'self_picture',
                 'self_picture_with_doc'
-            ], 'image', 'skipOnEmpty' => true, 'extensions' => ['png', 'jpg', 'jpeg']]
+            ], 'image', 'skipOnEmpty' => true, 'extensions' => ['png', 'jpg', 'jpeg']],
+            [['code'], 'string'],
+            [['code'], 'unique']
         ];
     }
 

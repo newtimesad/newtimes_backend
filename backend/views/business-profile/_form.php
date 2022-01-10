@@ -7,6 +7,7 @@ use kartik\file\FileInput;
 use rmrevin\yii\fontawesome\FAS;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
+use yii\web\YiiAsset;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
@@ -15,15 +16,30 @@ use yii\widgets\ActiveForm;
 /* @var $email common\models\Email */
 /* @var $kyc common\models\Kyc */
 /* @var $socialNetworks common\models\SocialNetwork */
-/* @var $form yii\widgets\ActiveForm */
+/* @var $form \kartik\form\ActiveForm */
+
+$this->registerJsFile("@web/js/business_profile.js", [
+    'position' => $this::POS_END,
+    'depends' => YiiAsset::class
+]);
+
+$selectedImages = false;
+if(!$model->isNewRecord){
+    $selectedImages = ($model->getPictures()->count() > 0);
+}
+
+$this->registerJsVar('selectedPictures', $selectedImages, $this::POS_BEGIN);
+
 ?>
 
 <div class="business-profile-form">
 
     <?php $form = ActiveForm::begin([
+        'id' => 'business-profile-form',
         'enableAjaxValidation' => true,
         'enableClientValidation' => true
     ]); ?>
+    <?= $form->field($model, 'attributesChanged')->hiddenInput(['value' => 0])->label(false) ?>
     <div class="card">
         <div class="card-body">
             <div class="row">
@@ -144,16 +160,18 @@ use yii\widgets\ActiveForm;
                             </span>
                         </div>
                         <div class="card-body">
-                            <?php if($model->isNewRecord): ?>
+                            <?php if ($model->isNewRecord): ?>
                                 <?= $form->field($model, 'images[]')->widget(FileInput::class, [
+                                    'id' => Html::getInputId($model, 'images'),
                                     'options' => [
                                         'accept' => 'image/*',
                                         'multiple' => true
                                     ],
                                     'pluginOptions' => [
-                                        'previewFileType' => 'image'
+                                        'previewFileType' => 'image',
+                                        'maxFileCount' => 6,
                                     ]
-                                ]) ?>
+                                ])->label("(Max 6 images)") ?>
                             <?php else: ?>
                                 <div class="row">
                                     <?php foreach ($model->pictures as $picture): ?>
@@ -188,6 +206,7 @@ use yii\widgets\ActiveForm;
                                         <?= $form->field($kyc, 'self_picture_with_doc')->widget(FileInput::class, [
                                             'options' => ['accept' => 'image/*'],
                                         ]) ?>
+                                        <h3>CODE: <strong><?= $kyc->code ?></strong></h3>
                                     </div>
                                 </div>
                             </div>

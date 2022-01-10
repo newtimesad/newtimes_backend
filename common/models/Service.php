@@ -69,4 +69,10 @@ class Service extends \yii\db\ActiveRecord
         return $this->hasMany(PostService::className(), ['service_id' => 'id']);
     }
 
+    public function getLabel()
+    {
+        $price = Yii::$app->formatter->asCurrency($this->price, 'usd');
+        return "{$this->name} ($price)";
+    }
+
 }

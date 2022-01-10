@@ -12,11 +12,14 @@ use Da\User\Validator\AjaxRequestModelValidator;
 use Yii;
 use common\models\BusinessProfile;
 use common\models\BusinessProfileSearch;
+use yii\bootstrap4\ActiveForm;
 use yii\data\Pagination;
+use yii\filters\AccessControl;
 use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\Response;
 use yii\web\UploadedFile;
 
 /**
@@ -36,6 +39,27 @@ class BusinessProfileController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
+                ],
+            ],
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'actions' => ['index', 'view', 'create', 'update', 'delete', 'remove-picture'],
+                        'roles' => ['admin'],
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['index', 'view', 'update', 'delete', 'remove-picture'],
+                        'roles' => ['manager'],
+                    ],
+
+                    [
+                        'allow' => true,
+                        'actions' => ['my-profiles', 'create','update', 'remove-picture'],
+                        'roles' => ['client'],
+                    ],
                 ],
             ],
         ];
@@ -108,6 +132,7 @@ class BusinessProfileController extends Controller
         $kyc = new Kyc();
         $socialNetwork = new SocialNetwork();
 
+
         $this->make(
             AjaxRequestModelValidator::class, [
             $businessProfile,
@@ -167,10 +192,9 @@ class BusinessProfileController extends Controller
 
                 $transaction->commit();
                 Yii::$app->session->setFlash('success', "The profile has been created, please, wait until your identity be verified");
-                return $this->redirect(['business-profile/update', 'id' => $businessProfile->id]);
+                return $this->redirect(['business-profile/my-profiles']);
             } elseif ($businessProfile->hasErrors()) {
                 $transaction->rollBack();
-                var_dump($businessProfile->errors);
             }
         } catch (\Exception $e) {
             $transaction->rollBack();
@@ -239,10 +263,9 @@ class BusinessProfileController extends Controller
 
                 $transaction->commit();
                 Yii::$app->session->setFlash('success', "The profile has been created, please, wait until your identity be verified");
-                return $this->redirect(['business-profile/update', 'id' => $model->id]);
+                return $this->redirect(['business-profile/my-profiles']);
             } elseif ($model->hasErrors()) {
                 $transaction->rollBack();
-                var_dump($model->errors);
             }
         } catch (\Exception $e) {
             $transaction->rollBack();

@@ -60,4 +60,10 @@ class PostType extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Post::className(), ['type_id' => 'id']);
     }
+
+    public function getLabel()
+    {
+        $price = Yii::$app->formatter->asCurrency($this->price, 'usd');
+        return "{$this->name} ($price - {$this->range} days)";
+    }
 }

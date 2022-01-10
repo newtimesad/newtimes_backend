@@ -65,8 +65,8 @@ use yii\bootstrap4\Html;
                 </div>
                 <div class="row">
                     <div class="col-6">
-                        <?= Html::a("EDIT", ['business-profile/update', 'id' => $profile->id], [
-                            'class' => 'btn btn-info w-100'
+                        <?= Html::a("EDIT", $profile->kyc->status !== Kyc::KYC_STATUS_ACCEPTED ? '#' : ['business-profile/update', 'id' => $profile->id], [
+                            'class' => ($profile->kyc->status !== Kyc::KYC_STATUS_ACCEPTED) ? 'btn btn-info w-100 disabled' : 'btn btn-info w-100',
                         ]) ?>
                     </div>
                     <div class="col-6">

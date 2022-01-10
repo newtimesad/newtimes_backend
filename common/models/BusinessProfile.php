@@ -56,11 +56,13 @@ class BusinessProfile extends \yii\db\ActiveRecord
     const ETHNIC_TYPE_HAWAIIAN = "hawaiian";
     const ETHNIC_TYPE_WHITE = "white";
 
-    public $images;
 
     const AFFILIATION_TYPE_AGENCY = 'AGENCY';
     const AFFILIATION_TYPE_INDEPENDENT = 'INDEPENDENT';
 
+    public $images;
+
+    public $attributesChanged = false;
 
     /**
      * {@inheritdoc}
@@ -93,12 +95,14 @@ class BusinessProfile extends \yii\db\ActiveRecord
             [['user_id', 'age', 'city_id'], 'default', 'value' => null],
             [['user_id', 'city_id'], 'integer'],
             [['age'], 'integer', 'min' => 18],
-            [['height'], 'number'],
+            [['height'], 'number', 'max' => '10.0', 'tooBig' => "Please select a real height"],
             [['name', 'ethnicity', 'hair_color', 'eye_color', 'measurements', 'available_to', 'aviability'], 'string', 'max' => 255],
             [['gender'], 'string', 'max' => 1],
+            [['measurements'], 'match', 'pattern' => '[^\d+-\d+-\d+$]', 'message' => "Measurements must be in format Bust-Waist-Hips"],
             [['affiliation'], 'in', 'range' => array_keys(self::getAffiliationTypes())],
             [['city_id'], 'exist', 'skipOnError' => true, 'targetClass' => City::className(), 'targetAttribute' => ['city_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
+            [['attributesChanged'], 'boolean']
 
         ];
     }
@@ -117,15 +121,14 @@ class BusinessProfile extends \yii\db\ActiveRecord
             'ethnicity' => Yii::t('app', 'Ethnicity'),
             'hair_color' => Yii::t('app', 'Hair Color'),
             'eye_color' => Yii::t('app', 'Eye Color'),
-            'height' => Yii::t('app', 'Height'),
-            'measurements' => Yii::t('app', 'Measurements'),
+            'height' => Yii::t('app', 'Height (ft)'),
+            'measurements' => Yii::t('app', 'Measurements (Bust-Waist-Hips)'),
             'affiliation' => Yii::t('app', 'Affiliation'),
             'available_to' => Yii::t('app', 'Available To'),
             'aviability' => Yii::t('app', 'Aviability'),
             'city_id' => Yii::t('app', 'City'),
         ];
     }
-
 
 
     /**
@@ -198,11 +201,13 @@ class BusinessProfile extends \yii\db\ActiveRecord
         return $this->hasOne(SocialNetwork::className(), ['business_profile_id' => 'id']);
     }
 
-    public function getFormattedAvailableTo(){
+    public function getFormattedAvailableTo()
+    {
         return self::getAvailableToItems()[$this->available_to];
     }
 
-    public static function getAvailableToItems(){
+    public static function getAvailableToItems()
+    {
         return [
             self::AVAILABLE_TO_MAN => "Man",
             self::AVAILABLE_TO_WOMAN => "Woman",
@@ -212,7 +217,8 @@ class BusinessProfile extends \yii\db\ActiveRecord
         ];
     }
 
-    public static function getEyeColors(){
+    public static function getEyeColors()
+    {
         return [
             self::EYE_COLOR_GREEN => "Green",
             self::EYE_COLOR_BLUE => "Blue",
@@ -222,7 +228,8 @@ class BusinessProfile extends \yii\db\ActiveRecord
         ];
     }
 
-    public static function getEthnicTypes(){
+    public static function getEthnicTypes()
+    {
         return [
             self::ETHNIC_TYPE_AMERICAN_INDIAN => "American Indian",
             self::ETHNIC_TYPE_ASIAN => "Asian",
@@ -251,13 +258,24 @@ class BusinessProfile extends \yii\db\ActiveRecord
         return array_keys(ArrayHelper::map($this->pictures, 'url', 'url'));
     }
 
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+
+        if($this->attributesChanged){
+            $kyc = $this->kyc;
+            $kyc->status = Kyc::KYC_STATUS_SENT;
+            $kyc->save();
+        }
+    }
+
     public function beforeDelete()
     {
-        if(!parent::beforeDelete()){
+        if (!parent::beforeDelete()) {
             return false;
         }
 
-        foreach ($this->pictures as $picture){
+        foreach ($this->pictures as $picture) {
             $picture->delete();
         }
 
