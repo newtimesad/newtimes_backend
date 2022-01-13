@@ -38,9 +38,6 @@ $this->registerJsVar('selectedPictures', $selectedImages, $this::POS_BEGIN);
         'id' => 'business-profile-form',
         'enableAjaxValidation' => true,
         'enableClientValidation' => true,
-        'options' => [
-                'enctype' => 'multipart/form-data'
-        ]
     ]); ?>
     <?= $form->field($model, 'attributesChanged')->hiddenInput(['value' => 0])->label(false) ?>
     <div class="card">
