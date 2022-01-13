@@ -262,10 +262,10 @@ class BusinessProfile extends \yii\db\ActiveRecord
     {
         parent::afterSave($insert, $changedAttributes);
 
-        if($this->attributesChanged){
+        if(!$insert and $this->attributesChanged){
             $kyc = $this->kyc;
             $kyc->status = Kyc::KYC_STATUS_SENT;
-            $kyc->save();
+            $kyc->save(false);
         }
     }
 
