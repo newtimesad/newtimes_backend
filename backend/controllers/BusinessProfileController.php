@@ -58,7 +58,7 @@ class BusinessProfileController extends Controller
 
                     [
                         'allow' => true,
-                        'actions' => ['my-profiles', 'create','update', 'remove-picture'],
+                        'actions' => ['my-profiles', 'create','update', 'remove-picture', 'remove'],
                         'roles' => ['client'],
                     ],
                 ],
