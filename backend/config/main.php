@@ -1,7 +1,8 @@
 <?php
 
+use backend\controllers\user\RegistrationController;
 use backend\controllers\user\SecurityController;
-use Da\User\Controller\AdminController;
+use backend\controllers\user\AdminController;
 
 $params = array_merge(
     require __DIR__ . '/../../common/config/params.php',
@@ -30,12 +31,15 @@ return [
                 'security' => [
                     'class' => SecurityController::class
                 ],
+                'registration' => [
+                    'class' => RegistrationController::class
+                ]
             ],
             'enableEmailConfirmation' => false,
             'administrators' => ['administrator'],
             'administratorPermissionName' => 'admin',
             // ...other configs from here: [Configuration Options](installation/configuration-options.md), e.g.
-            'generatePasswords' => true,
+            'generatePasswords' => false,
             'switchIdentitySessionKey' => 'myown_usuario_admin_user_key',
             'enableSwitchIdentities' => true,
             'allowUnconfirmedEmailLogin' => true,

@@ -16,26 +16,28 @@ use common\widgets\Alert;
 AdminLtePluginAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
-<!DOCTYPE html>
-<html lang="<?= Yii::$app->language ?>">
+    <!DOCTYPE html>
+    <html lang="<?= Yii::$app->language ?>">
 
-<head>
-    <meta charset="<?= Yii::$app->charset ?>">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <?php $this->registerCsrfMetaTags() ?>
-    <title><?= Html::encode($this->title) ?>
-    </title>
-    <?php $this->head() ?>
-</head>
+    <head>
+        <meta charset="<?= Yii::$app->charset ?>">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <?php $this->registerCsrfMetaTags() ?>
+        <title><?= Html::encode($this->title) ?>
+        </title>
+        <?php $this->head() ?>
+    </head>
 
-<body class="hold-transition sidebar-mini layout-fixed sidebar-collapse">
+    <body class="hold-transition sidebar-mini layout-fixed sidebar-collapse">
     <?php $this->beginBody() ?>
 
     <div class="wrapper">
-        <?= $this->render('_navbar.php') ?>
-        <!-- Main Sidebar Container -->
-        <?= $this->render('_aside.php') ?>
+        <?php if (!Yii::$app->user->isGuest): ?>
+            <?= $this->render('_navbar.php') ?>
+            <!-- Main Sidebar Container -->
+            <?= $this->render('_aside.php') ?>
+        <?php endif; ?>
         <div class="content-wrapper">
             <section class="content-header">
                 <div class="container-fluid">
@@ -46,12 +48,12 @@ AdminLtePluginAsset::register($this);
                         </div>
                         <div class="col-sm-6">
                             <?= Breadcrumbs::widget([
-                            'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-                            'options' => ['class' => 'breadcrumb float-sm-right'],
-                            'itemTemplate' => "<li class='breadcrumb-item'>{link}</li>\n",
-                            'activeItemTemplate' => "<li class=\"breadcrumb-item active\">{link}</li>\n",
-                            'encodeLabels' => false,
-                        ]) ?>
+                                'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+                                'options' => ['class' => 'breadcrumb float-sm-right'],
+                                'itemTemplate' => "<li class='breadcrumb-item'>{link}</li>\n",
+                                'activeItemTemplate' => "<li class=\"breadcrumb-item active\">{link}</li>\n",
+                                'encodeLabels' => false,
+                            ]) ?>
                         </div>
                     </div>
                 </div><!-- /.container-fluid -->
@@ -74,7 +76,7 @@ AdminLtePluginAsset::register($this);
     </footer>
 
     <?php $this->endBody() ?>
-</body>
+    </body>
 
-</html>
+    </html>
 <?php $this->endPage() ?>

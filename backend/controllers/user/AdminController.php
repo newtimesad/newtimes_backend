@@ -9,7 +9,7 @@
  * the LICENSE file that was distributed with this source code.
  */
 
-namespace Da\User\Controller;
+namespace backend\controllers\user;
 
 use Da\User\Event\UserEvent;
 use Da\User\Factory\MailFactory;
