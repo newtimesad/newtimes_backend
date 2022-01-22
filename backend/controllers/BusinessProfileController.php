@@ -177,6 +177,7 @@ class BusinessProfileController extends Controller
                         } else {
                             var_dump($img->errors);
                             $transaction->rollBack();
+                            die;
                         }
                     }
                 }
