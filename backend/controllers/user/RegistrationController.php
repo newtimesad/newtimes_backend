@@ -136,6 +136,8 @@ class RegistrationController extends Controller
                     Yii::$app->session->setFlash('info', Yii::t('usuario', 'Your account has been created'));
                 }
                 $this->trigger(FormEvent::EVENT_AFTER_REGISTER, $event);
+                $role = Yii::$app->authManager->getRole('client');
+                Yii::$app->authManager->assign($role, $user->id);
                 return $this->render(
                     '/shared/message',
                     [
