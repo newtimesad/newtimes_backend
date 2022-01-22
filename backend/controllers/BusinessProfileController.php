@@ -14,6 +14,7 @@ use common\models\BusinessProfile;
 use common\models\BusinessProfileSearch;
 use yii\bootstrap4\ActiveForm;
 use yii\data\Pagination;
+use yii\db\Exception;
 use yii\filters\AccessControl;
 use yii\helpers\Url;
 use yii\web\Controller;
@@ -189,6 +190,7 @@ class BusinessProfileController extends Controller
                     $kyc->save(false);
                 } else {
                     $transaction->rollBack();
+                    throw new Exception(json_encode($errors));
                 }
 
                 $transaction->commit();
@@ -199,6 +201,7 @@ class BusinessProfileController extends Controller
             }
         } catch (\Exception $e) {
             $transaction->rollBack();
+            throw new Exception($e->getMessage());
         }
 
         return $this->render('create', [
