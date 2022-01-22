@@ -175,6 +175,7 @@ class BusinessProfileController extends Controller
                         if ($img->save()) {
                             $image->saveAs('@backend/web/uploads/' . $img->name, true);
                         } else {
+                            var_dump($img->errors);
                             $transaction->rollBack();
                         }
                     }
