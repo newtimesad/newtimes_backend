@@ -70,7 +70,7 @@ class Picture extends \yii\db\ActiveRecord
 
     public function getUrl()
     {
-        $host = Yii::$app->request->hostInfo;
+        $host = Yii::$app->params['backendBaseUrl'];
         return (isset($this->name) and is_file(Yii::getAlias("@backend/web/uploads/{$this->name}")))
             ? $host . Yii::getAlias("@web/uploads/{$this->name}")
             : $host . Yii::getAlias("@web/img/no_user_picture.png");

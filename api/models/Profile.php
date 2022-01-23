@@ -8,6 +8,10 @@ class Profile extends \common\models\BusinessProfile
     {
         $fields = parent::fields();
         $fields['pictures'] = 'picturesUrls';
+        $fields['city'] = 'city';
+        $fields['email'] = 'email';
+        $fields['phone'] = 'phone';
+        $fields['available_to'] = 'formattedAvailableTo';
 
         return $fields;
     }

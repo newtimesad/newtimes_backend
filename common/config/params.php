@@ -11,5 +11,6 @@ return [
     'user.passwordMinLength' => 8,
     'appName' => 'NewTimes',
     'defaultLanguage' => 'en',
-    'jwtSecretCode' => "as&*^d.ASdasdgfhjsdASDNVasfbnvASM&@%676A%A%s45a4d65adasdjhHJGASd"
+    'jwtSecretCode' => "as&*^d.ASdasdgfhjsdASDNVasfbnvASM&@%676A%A%s45a4d65adasdjhHJGASd",
+    'backendBaseUrl' => "http://localhost:21080"
 ];
