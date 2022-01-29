@@ -1,5 +1,6 @@
 <?php
 return [
+    'bsDependencyEnabled' => false,
     'admin.username' => 'admin',
     'admin.email' => 'admin@newtimes.com',
     'admin.password' => 'admin.123',
@@ -9,5 +10,7 @@ return [
     'user.passwordResetTokenExpire' => 3600,
     'user.passwordMinLength' => 8,
     'appName' => 'NewTimes',
-    'defaultLanguage' => 'en'
+    'defaultLanguage' => 'en',
+    'jwtSecretCode' => "as&*^d.ASdasdgfhjsdASDNVasfbnvASM&@%676A%A%s45a4d65adasdjhHJGASd",
+    'backendBaseUrl' => "http://localhost:21080"
 ];

@@ -48,7 +48,7 @@ class Location extends \yii\db\ActiveRecord
             'id' => Yii::t('app', 'ID'),
             'price' => Yii::t('app', 'Price'),
             'name' => Yii::t('app', 'Name'),
-            'city_id' => Yii::t('app', 'City ID'),
+            'city_id' => Yii::t('app', 'City'),
         ];
     }
 
@@ -70,5 +70,11 @@ class Location extends \yii\db\ActiveRecord
     public function getPostLocations()
     {
         return $this->hasMany(PostLocation::className(), ['location_id' => 'id']);
+    }
+
+    public function getLabel()
+    {
+        $price = Yii::$app->formatter->asCurrency($this->price, 'usd');
+        return "{$this->name} ($price)";
     }
 }

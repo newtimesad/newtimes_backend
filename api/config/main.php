@@ -81,7 +81,8 @@ return [
                     'controller' => 'v1/user',
                     'pluralize' => false,
                     'extraPatterns' => [
-                        'POST login' => 'login'
+                        'POST login' => 'login',
+                        'POST signup' => 'signup'
                     ]
                 ],
                 [
@@ -121,6 +122,11 @@ return [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'v1/service',
                 ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'v1/post-type',
+                ],
+
                 [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'v1/speciality-category',

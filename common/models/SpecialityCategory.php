@@ -68,4 +68,10 @@ class SpecialityCategory extends \yii\db\ActiveRecord
         return $this->hasMany(Post::className(), ['id' => 'post_id'])
             ->viaTable('speciality_categories_post', ['speciality_category_id' => 'id']);
     }
+
+    public function getLabel()
+    {
+        $price = Yii::$app->formatter->asCurrency($this->price, 'usd');
+        return "{$this->name} ($price)";
+    }
 }

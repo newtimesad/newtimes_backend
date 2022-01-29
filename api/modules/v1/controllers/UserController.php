@@ -5,6 +5,7 @@ namespace api\modules\v1\controllers;
 
 use api\models\user\LoginForm;
 use api\models\user\Profile;
+use api\models\user\RegistrationForm;
 use api\models\user\Token;
 use api\models\user\User;
 use Da\User\AuthClient\Facebook;
@@ -358,12 +359,10 @@ class UserController extends BaseActiveController
                 $response = \Yii::$app->getResponse();
                 $response->setStatusCode(200);
                 $id = implode(',', array_values($user->getPrimaryKey(true)));
-                $userBox = UserBox::find()->where(['user_id' => $id])->one();
-                $boxId = !is_null($userBox) ? $userBox->box_id : null;
+
                 
                 $responseData = [
                     'id' => (int)$id,
-                    'box_id' => (int)$boxId,
                     'access_token' => $user->access_token,
                 ];
 
@@ -430,98 +429,33 @@ class UserController extends BaseActiveController
      * @throws InvalidConfigException
      * @throws \Exception
      */
-//    public
-//    function actionSignup($email = '', $username = '', $password = '')
-//    {
-//        /** @var RegistrationForm $form */
-//        $form = $this->make(RegistrationForm::class);
-//        /** @var FormEvent $event */
-//        $event = $this->make(FormEvent::class, [$form]);
-//
-//        if ($form->load(Yii::$app->request->post()) && $form->validate()) {
-//            $this->trigger(FormEvent::EVENT_BEFORE_REGISTER, $event);
-//
-//            /** @var User $user */
-//            $user = $this->make(User::class, [], $form->attributes);
-//            $user->setScenario('register');
-//            $mailService = MailFactory::makeWelcomeMailerService($user);
-//
-//            $this->make(UserRegisterService::class, [$user, $mailService])->run();
-//
-//            $this->trigger(FormEvent::EVENT_AFTER_REGISTER, $event);
-//
-//            $response = \Yii::$app->getResponse();
-//            $response->setStatusCode(201);
-//            $responseData = 'true';
-//            return $responseData;
-//        } else {
-//            // Validation error
-//            throw new HttpException(422, json_encode($form->errors));
-//        }
-//    }
+
 
     public
     function actionSignup()
     {
-        /** @var UserProfileRegistrationForm $form */
-        $form = $this->make(UserProfileRegistrationForm::class);
+        /** @var RegistrationForm $form */
+        $form = $this->make(RegistrationForm::class);
         /** @var FormEvent $event */
         $event = $this->make(FormEvent::class, [$form]);
 
         $transaction = Yii::$app->db->beginTransaction();
-        if ($form->load(Yii::$app->request->post()) && $form->validate()) {
+        $post = Yii::$app->request->post();
+        $post['email'] = $post['username'];
+        if ($form->load($post) && $form->validate()) {
             $this->trigger(FormEvent::EVENT_BEFORE_REGISTER, $event);
 
             /** @var User $user */
             $user = $this->make(User::class, [], $form->getAttributes(['email', 'username', 'password']));
             $user->confirmed_at = time();
-            $user->save(false);
-            /** @var Profile $profile */
-            $profile = $this->make(Profile::class, [], $form->getAttributes(['name', 'first_surname', 'second_surname', 'birthdate', 'gender', 'height', 'intensity_category_id']));
-            $profile->user_id = $user->id;
-            if (array_key_exists('privacy', Yii::$app->request->post()) and !is_null($privacy = Yii::$app->request->post('privacy', null))) {
-                // convert request data to PrivacyObject
-                $profile->privacy = Json::encode($privacy);
-            }
-            $profile->save();
-
-            if (array_key_exists('weight', Yii::$app->request->post()) and !is_null(($weight = Yii::$app->request->post('weight', null)))) {
-                $bodyWeight = new BodyWeight();
-                $bodyWeight->user_id = $user->id;
-                $bodyWeight->date = date('Y-m-d');
-                $bodyWeight->weight = $weight;
-                $bodyWeight->imc = $weight / pow($profile->height, 2);
-                $bodyWeight->created_by = $user->id;
-                $bodyWeight->updated_by = $user->id;
-                $bodyWeight->created_at = date('Y-m-d');
-                $bodyWeight->updated_at = date('Y-m-d');
-                $bodyWeight->defaultValue = $user->id;
-
-                if (!$bodyWeight->save()) {
-                    return [
-                        'weight' => $bodyWeight->getErrors()
-                    ];
-                }
+            if($user->save(false)){
+                $authManager = Yii::$app->getAuthManager();
+                $role = $authManager->getRole('client');
+                $authManager->assign($role, $user->id);
             }
 
-            if (!Yii::$app->params['isMultiBoxApp']) {
-                $box = Box::find()->one();
-                $userBox = new UserBox(['userClass' => User::class, 'scenario' => 'register']);
-                $userBox->user_id = $user->id;
-                $userBox->box_id = $box->id;
-                $userBox->save();
-            }else{
-                if(is_null($boxId = Yii::$app->request->post('box_id', null))){
-                    throw new NotFoundHttpException('Box not found');
-                }
-                $userBox = new UserBox(['userClass' => User::class, 'scenario' => 'register']);
-                $userBox->user_id = $user->id;
-                $userBox->box_id = $boxId;
-                $userBox->save();
-            }
-
-            MailFactory::makeWelcomeMailerService($user)->run();
-            MailFactory::makeNewAthleteMailerService($user)->run();
+//            MailFactory::makeWelcomeMailerService($user)->run();
+//            MailFactory::makeNewAthleteMailerService($user)->run();
 
             $this->trigger(FormEvent::EVENT_AFTER_REGISTER, $event);
 
@@ -891,313 +825,6 @@ class UserController extends BaseActiveController
         throw new HttpException(422, json_encode($form->errors));
     }
 
-    /**
-     *
-     * @SWG\Get(path="/user/{userId}/box/{boxId}/history",
-     *     tags={"user"},
-     *     summary="Get user history in box",
-     *     description="Returns the specified user history in specified box",
-     *     produces={"application/json"},
-     *
-     *     @SWG\Parameter(
-     *        in = "path",
-     *        name = "userId",
-     *        description = "User ID",
-     *        required = true,
-     *        type = "integer"
-     *     ),
-     *     @SWG\Parameter(
-     *        in = "path",
-     *        name = "boxId",
-     *        description = "Box ID",
-     *        required = true,
-     *        type = "integer"
-     *     ),
-     *
-     *     @SWG\Response(
-     *         response = 200,
-     *         description = "success",
-     *         @SWG\Schema(ref="#/definitions/ListUserHistoryFormattedInfo")
-     *     ),
-     *     @SWG\Response(
-     *         response = 401,
-     *         description = "Forbidden",
-     *         @SWG\Schema(ref="#/definitions/UnauthorizedHttpException")
-     *     ),
-     *     @SWG\Response(
-     *         response = 404,
-     *         description = "Not found",
-     *         @SWG\Schema(ref="#/definitions/NotFoundHttpException")
-     *     )
-     * )
-     *
-     *
-     * return user history in specified Box
-     *
-     * (GET) -> user/{userId}/box/{boxId}/history
-     *
-     * @param integer $boxId
-     * @param integer $userId
-     * @return array response status
-     * @throws \Exception
-     */
-    public
-    function actionHistory($boxId, $userId)
-    {
-        $box = Box::find()->where(['=', 'id', $boxId])->one();
-        $userHistories = $box->getUserHistory($userId)->orderBy('date ASC')->all();
-        return UserHistory::formatUserHistories($userHistories);
-    }
 
 
-    /**
-     * /**
-     *
-     * @SWG\Get(path="/user/{userId}/box/{boxId}/status",
-     *     tags={"user"},
-     *     summary="Get user status in box",
-     *     description="Returns the specified user status in specified box",
-     *     produces={"application/json"},
-     *
-     *     @SWG\Parameter(
-     *        in = "path",
-     *        name = "userId",
-     *        description = "User ID",
-     *        required = true,
-     *        type = "integer"
-     *     ),
-     *     @SWG\Parameter(
-     *        in = "path",
-     *        name = "boxId",
-     *        description = "Box ID",
-     *        required = true,
-     *        type = "integer"
-     *     ),
-     *     @SWG\Response(
-     *         response = 401,
-     *         description = "Forbidden",
-     *         @SWG\Schema(ref="#/definitions/UnauthorizedHttpException")
-     *     ),
-     *     @SWG\Response(
-     *         response = 404,
-     *         description = "Not found",
-     *         @SWG\Schema(ref="#/definitions/NotFoundHttpException")
-     *     ),
-     *     @SWG\Response(
-     *         response = 200,
-     *         description = "success",
-     *         @SWG\Schema(ref="#/definitions/UserBoxStatus")
-     *     )
-     * )
-     *
-     *
-     * return user history in specified Box
-     *
-     * (GET) -> user/{userId}/box/{boxId}/history
-     *
-     * @param $userId
-     * @param $boxId
-     * @return mixed
-     * @throws NotFoundHttpException
-     */
-    public
-    function actionUserStatus($userId, $boxId)
-    {
-        $userBox = UserBox::find()->where(['user_id' => $userId, 'box_id' => $boxId])->one();
-
-        if ($userBox) {
-            $response = \Yii::$app->getResponse();
-            $response->setStatusCode(200);
-            return $userBox->status;
-        }
-
-        throw new NotFoundHttpException('Object not found');
-    }
-
-
-    /**
-     * /**
-     *
-     * @SWG\Get(path="/user/{userId}/box/{boxId}",
-     *     tags={"user"},
-     *     summary="Get user box relation info",
-     *     description="Returns the specified user box relation",
-     *     produces={"application/json"},
-     *
-     *     @SWG\Parameter(
-     *        in = "path",
-     *        name = "userId",
-     *        description = "User ID",
-     *        required = true,
-     *        type = "integer"
-     *     ),
-     *     @SWG\Parameter(
-     *        in = "path",
-     *        name = "boxId",
-     *        description = "Box ID",
-     *        required = true,
-     *        type = "integer"
-     *     ),
-     *     @SWG\Response(
-     *         response = 403,
-     *         description = "Forbidden",
-     *         @SWG\Schema(ref="#/definitions/ForbiddenHttpException")
-     *     ),
-     *     @SWG\Response(
-     *         response = 404,
-     *         description = "Not found",
-     *         @SWG\Schema(ref="#/definitions/NotFoundHttpException")
-     *     ),
-     *     @SWG\Response(
-     *         response = 200,
-     *         description = "success",
-     *         @SWG\Schema(ref="#/definitions/UserBoxInfo")
-     *     )
-     * )
-     *
-     * @param $userId
-     * @param $boxId
-     * @return mixed
-     * @throws NotFoundHttpException
-     * @throws UnauthorizedHttpException
-     * @throws \yii\web\BadRequestHttpException
-     */
-    public function actionUserBoxInfo($userId, $boxId)
-    {
-
-        if (!Yii::$app->user->can('admin') && $userId != Yii::$app->user->id) {
-            throw new UnauthorizedHttpException('You don\'t have access to this information');
-        }
-
-        $boxId = BoxHelper::getBoxId($boxId);
-
-        $userBox = \api\models\UserBox::find()->where(['user_id' => $userId])->andWhere(['box_id' => $boxId])->one();
-
-        if (!$userBox) {
-            throw new NotFoundHttpException('The user doesn\'t belong to the requested box');
-        }
-
-        return $userBox;
-    }
-
-    /**
-     *
-     * @SWG\Post(path="/user/{userId}/box/{boxId}",
-     *     tags={"user"},
-     *     summary="Update a user box relation",
-     *     description="Update a user box relation given the user id an the box id",
-     *     produces={"application/json"},
-     *     consumes={"application/json"},
-     *
-     *     @SWG\Parameter(
-     *        in = "path",
-     *        name = "userId",
-     *        description = "User ID",
-     *        required = true,
-     *        type = "integer"
-     *     ),
-     *
-     *     @SWG\Parameter(
-     *        in = "path",
-     *        name = "boxId",
-     *        description = "Box ID",
-     *        required = true,
-     *        type = "integer"
-     *     ),
-     *
-     *     @SWG\Parameter(
-     *        in = "body",
-     *        name = "data",
-     *        description = "User box relatiton ",
-     *        required = true,
-     *        type = "string",
-     *        @SWG\Schema(ref = "#/definitions/UserBoxPost")
-     *     ),
-     *
-     *      @SWG\Response(
-     *         response = 401,
-     *         description = "MethodNotAllowed",
-     *         @SWG\Schema(ref="#/definitions/MethodNotAllowedHttpException")
-     *     ),
-     *
-     *     @SWG\Response(
-     *         response = 400,
-     *         description = "BadRequest",
-     *         @SWG\Schema(ref="#/definitions/BadRequestHttpException")
-     *     ),
-     *
-     *     @SWG\Response(
-     *         response = 403,
-     *         description = "Forbidden",
-     *         @SWG\Schema(ref="#/definitions/ForbiddenHttpException")
-     *     ),
-     *
-     *     @SWG\Response(
-     *         response = 404,
-     *         description = "Not found",
-     *         @SWG\Schema(ref="#/definitions/NotFoundHttpException")
-     *     ),
-     *
-     *      @SWG\Response(
-     *         response = 200,
-     *         description = "success",
-     *         @SWG\Schema(ref="#/definitions/DefaultSuccess")
-     *     ),
-     * )
-     *
-     *
-     * @return string
-     * @throws HttpException
-     * @throws NotFoundHttpException
-     */
-    public function actionUpdateUserBoxRelation($userId, $boxId)
-    {
-        if (!Yii::$app->user->can('admin') && $userId != Yii::$app->user->id) {
-            throw new ForbiddenHttpException('You can\'t update this box relation');
-        }
-
-        $boxId = BoxHelper::getBoxId($boxId);
-
-        $userBox = UserBox::find()->where(['user_id' => $userId])->andWhere(['box_id' => $boxId])->one();
-
-        if (!$userBox) {
-            throw new NotFoundHttpException('The user doesn\'t belong to the requested box');
-        }
-
-        $request = Yii::$app->request;
-        $toLoad = [];
-        if ($request->post('status', false)) {
-            $toLoad['status'] = $request->post('status');
-        }
-        if (array_key_exists('fee_id', $request->post())) {
-            $toLoad['fee_id'] = $request->post('fee_id');
-        }
-
-        $userBox->scenario = 'update';
-        if ($userBox->load($toLoad, '') && $userBox->save()) {
-            return true;
-        }
-
-        throw new HttpException(422, json_encode($userBox->errors));
-    }
-
-
-//    public function actionReservations($id)
-//    {
-//        $user = User::findOne($id);
-//        $a = \Yii::createObject([
-//            'class' => 'api\helpers\ListActionDataProviderHelper',
-//            'modelClass' => $this->modelClass,
-//            'dataFilter' => [
-//                'class' => 'yii\data\ActiveDataFilter',
-//                'searchModel' => ReservationSearch::class
-//            ],
-//            'prepareQuery' => function ($action) use ($user) {
-////                return $this->modelClass::find()->joinWith('box')->where(['box_id' => $boxId]);
-//                return Reservation::find()->innerJoinWith('box')->where(['user_id' => $user->id]);
-//            },
-//        ]);
-//
-//        return $a->getDataProvider();
-//    }
 }

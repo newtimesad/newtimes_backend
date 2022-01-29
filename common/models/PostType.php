@@ -46,7 +46,7 @@ class PostType extends \yii\db\ActiveRecord
         return [
             'id' => Yii::t('app', 'ID'),
             'name' => Yii::t('app', 'Name'),
-            'range' => Yii::t('app', 'Range'),
+            'range' => Yii::t('app', 'Range (days)'),
             'price' => Yii::t('app', 'Price'),
         ];
     }
@@ -59,5 +59,11 @@ class PostType extends \yii\db\ActiveRecord
     public function getPosts()
     {
         return $this->hasMany(Post::className(), ['type_id' => 'id']);
+    }
+
+    public function getLabel()
+    {
+        $price = Yii::$app->formatter->asCurrency($this->price, 'usd');
+        return "{$this->name} ($price - {$this->range} days)";
     }
 }

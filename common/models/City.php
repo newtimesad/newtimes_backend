@@ -43,6 +43,7 @@ class City extends \yii\db\ActiveRecord
             [['name', 'code_2', 'code_3'], 'string', 'max' => 255],
             [['longitude', 'latitude'], 'string', 'max' => 12],
             [['state_id'], 'exist', 'skipOnError' => true, 'targetClass' => State::className(), 'targetAttribute' => ['state_id' => 'id']],
+            [['name'], 'unique', 'targetAttribute' => ['name','state_id'], 'message' => 'This city already exists on selected state']
         ];
     }
 
@@ -58,7 +59,7 @@ class City extends \yii\db\ActiveRecord
             'code_3' => Yii::t('app', 'Code 3'),
             'longitude' => Yii::t('app', 'Longitude'),
             'latitude' => Yii::t('app', 'Latitude'),
-            'state_id' => Yii::t('app', 'State ID'),
+            'state_id' => Yii::t('app', 'State'),
         ];
     }
 

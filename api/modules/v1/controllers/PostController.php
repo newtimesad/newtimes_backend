@@ -2,7 +2,7 @@
 
 namespace api\modules\v1\controllers;
 
-use common\models\Post;
+use api\models\Post;
 use yii\filters\AccessControl;
 
 class PostController extends BaseActiveController
