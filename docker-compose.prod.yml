@@ -32,8 +32,8 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=proxy"
-      - "traekif.http.routers.api-secure.entrypoints=websecure"
-      - "traekif.http.routers.api-secure.rule=Host(`api.lexuryscort.com`)"
+      - "traefik.http.routers.api-secure.entrypoints=websecure"
+      - "traefik.http.routers.api-secure.rule=Host(`api.lexuryscort.com`)"
 
 
   backend:
@@ -57,8 +57,8 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=proxy"
-      - "traekif.http.routers.backend-secure.entrypoints=websecure"
-      - "traekif.http.routers.backend-secure.rule=Host(`backend.lexuryscort.com`)"
+      - "traefik.http.routers.backend-secure.entrypoints=websecure"
+      - "traefik.http.routers.backend-secure.rule=Host(`backend.lexuryscort.com`)"
 
 networks:
   proxy:
