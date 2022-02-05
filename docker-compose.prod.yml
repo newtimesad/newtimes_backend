@@ -55,6 +55,5 @@ services:
       - "traekif.http.routers.backend-secure.rule=Host(`backend.lexuryscort.com`)"
 
 networks:
-  default:
-    external:
-      name: proxy
+  proxy:
+    external: true
