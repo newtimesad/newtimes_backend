@@ -26,9 +26,26 @@ services:
       - ./:/app
       - ./docker/php/custom-config.ini:/usr/local/etc/php/conf.d/custom-config.ini
       - ./docker/php/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
-    environment:
-      VIRTUAL_HOST: api.lexuryscort.com
-      PHP_ENABLE_XDEBUG: 1
+    labels:
+      - "traefik.enable=true"
+
+      - "traefik.http.routers.apit.rule=Host(`api.lexuryscort.com`)"
+      - "traefik.http.routers.apit.entrypoints=http"
+      - "traefik.http.routers.apit.service=apit"
+      - "traefik.http.middlewares.apit-redirectscheme.redirectscheme.scheme=https"
+      - "traefik.http.middlewares.apit-redirectscheme.redirectscheme.permanent=false"
+      - "traefik.http.routers.apit.middlewares=apit-redirectscheme"
+
+      - "traefik.http.routers.apit-secure.rule=Host(`api.lexuryscort.com`)"
+      - "traefik.http.routers.apit-secure.entrypoints=https"
+      - "traefik.http.routers.apit-secure.service=apit"
+      - "traefik.http.routers.apit-secure.tls=true"
+      - "traefik.http.routers.apit-secure.tls.certresolver=letsencrypt"
+
+      - "traefik.http.services.apit.loadbalancer.server.port=80"
+      - "traefik.http.services.apit.loadbalancer.server.scheme=http"
+      - "traefik.http.services.apit.loadbalancer.passhostheader=true"
+
 
   backend:
 #    depends_on:
@@ -45,11 +62,28 @@ services:
       - ./:/app
       - ./docker/php/custom-config.ini:/usr/local/etc/php/conf.d/custom-config.ini
       - ./docker/php/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
-    environment:
-      VIRTUAL_HOST: dashboard.lexuryscort.com
-      PHP_ENABLE_XDEBUG: 1
+    labels:
+      - "traefik.enable=true"
+
+      - "traefik.http.routers.apit.rule=Host(`dashboard.lexuryscort.com`)"
+      - "traefik.http.routers.apit.entrypoints=http"
+      - "traefik.http.routers.apit.service=apit"
+      - "traefik.http.middlewares.apit-redirectscheme.redirectscheme.scheme=https"
+      - "traefik.http.middlewares.apit-redirectscheme.redirectscheme.permanent=false"
+      - "traefik.http.routers.apit.middlewares=apit-redirectscheme"
+
+      - "traefik.http.routers.apit-secure.rule=Host(`dashboard.lexuryscort.com`)"
+      - "traefik.http.routers.apit-secure.entrypoints=https"
+      - "traefik.http.routers.apit-secure.service=apit"
+      - "traefik.http.routers.apit-secure.tls=true"
+      - "traefik.http.routers.apit-secure.tls.certresolver=letsencrypt"
+
+      - "traefik.http.services.apit.loadbalancer.server.port=80"
+      - "traefik.http.services.apit.loadbalancer.server.scheme=http"
+      - "traefik.http.services.apit.loadbalancer.passhostheader=true"
+
 
 networks:
   default:
     external:
-      name: nginx-proxy
+      name: proxy
