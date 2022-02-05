@@ -26,6 +26,9 @@ services:
       - ./:/app
       - ./docker/php/custom-config.ini:/usr/local/etc/php/conf.d/custom-config.ini
       - ./docker/php/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
+    networks:
+      - proxy
+      - default
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=proxy"
@@ -48,6 +51,9 @@ services:
       - ./:/app
       - ./docker/php/custom-config.ini:/usr/local/etc/php/conf.d/custom-config.ini
       - ./docker/php/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
+    networks:
+      - proxy
+      - default
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=proxy"
