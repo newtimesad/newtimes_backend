@@ -143,9 +143,19 @@ class BusinessProfile extends \yii\db\ActiveRecord
      */
     public function getCity()
     {
-//        return $this->hasOne(City::className(), ['id' => 'city_id']);
+        return $this->hasOne(City::className(), ['id' => 'city_id']);
+    }
+
+    /**
+     * Gets query for [[City]].
+     *
+     * @return String
+     */
+    public function getCityStr()
+    {
         return City::findOne(['id' => $this->city_id])->name;
     }
+
 
     /**
      * Gets query for [[User]].
@@ -164,7 +174,16 @@ class BusinessProfile extends \yii\db\ActiveRecord
      */
     public function getEmail()
     {
-//        return $this->hasOne(Email::className(), ['business_profile_id' => 'id']);
+        return $this->hasOne(Email::className(), ['business_profile_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Emails]].
+     *
+     * @return String
+     */
+    public function getEmailStr()
+    {
         return Email::findOne(['business_profile_id' => $this->id])->email;
     }
 
@@ -185,7 +204,16 @@ class BusinessProfile extends \yii\db\ActiveRecord
      */
     public function getPhone()
     {
-//        return $this->hasOne(Phone::className(), ['business_profile_id' => 'id']);
+        return $this->hasOne(Phone::className(), ['business_profile_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Phones]].
+     *
+     * @return String
+     */
+    public function getPhoneStr()
+    {
         return Phone::findOne(['business_profile_id' => $this->id])->phone;
     }
 
