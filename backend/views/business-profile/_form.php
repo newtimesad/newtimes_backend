@@ -109,6 +109,10 @@ $this->registerJsVar('selectedPictures', $selectedImages, $this::POS_BEGIN);
                                     <?= $form->field($model, 'height')->textInput() ?>
                                 </div>
                                 <div class="col-sm-12 col-md-4 col-lg-3 col-xl-3">
+                                    <?= $form->field($model, 'weight')->textInput() ?>
+                                </div>
+
+                                <div class="col-sm-12 col-md-4 col-lg-3 col-xl-3">
                                     <?= $form->field($model, 'measurements')->textInput(['maxlength' => true]) ?>
                                 </div>
                                 <div class="col-sm-12 col-md-4 col-lg-3 col-xl-3">

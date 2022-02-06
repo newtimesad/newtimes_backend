@@ -19,7 +19,7 @@ class BusinessProfileSearch extends BusinessProfile
         return [
             [['id', 'user_id', 'age', 'city_id'], 'integer'],
             [['name', 'gender', 'ethnicity', 'hair_color', 'eye_color', 'measurements', 'affiliation', 'available_to', 'aviability'], 'safe'],
-            [['height'], 'number'],
+            [['height', 'weight'], 'number'],
         ];
     }
 
@@ -63,6 +63,7 @@ class BusinessProfileSearch extends BusinessProfile
             'user_id' => $this->user_id,
             'age' => $this->age,
             'height' => $this->height,
+            'weight' => $this->weight,
             'city_id' => $this->city_id,
         ]);
 
