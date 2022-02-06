@@ -32,7 +32,9 @@ use yii\helpers\ArrayHelper;
  * @property Post[] $posts
  * @property-read Picture[] $pictures
  * @property-read string $formattedAvailableTo
+ * @property-read mixed $picturesUrls
  * @property SocialNetwork $socialNetwork
+ * @property float $weight [double precision]
  */
 class BusinessProfile extends \yii\db\ActiveRecord
 {
@@ -90,7 +92,8 @@ class BusinessProfile extends \yii\db\ActiveRecord
                 'affiliation',
                 'available_to',
                 'aviability',
-                'gender'
+                'gender',
+                'weight',
             ], 'required'],
             [['user_id', 'age', 'city_id'], 'default', 'value' => null],
             [['user_id', 'city_id'], 'integer'],
@@ -102,7 +105,8 @@ class BusinessProfile extends \yii\db\ActiveRecord
             [['affiliation'], 'in', 'range' => array_keys(self::getAffiliationTypes())],
             [['city_id'], 'exist', 'skipOnError' => true, 'targetClass' => City::className(), 'targetAttribute' => ['city_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
-            [['attributesChanged'], 'boolean']
+            [['attributesChanged'], 'boolean'],
+            [['weight'], 'number']
 
         ];
     }
@@ -127,6 +131,7 @@ class BusinessProfile extends \yii\db\ActiveRecord
             'available_to' => Yii::t('app', 'Available To'),
             'aviability' => Yii::t('app', 'Aviability'),
             'city_id' => Yii::t('app', 'City'),
+            'weight' => Yii::t('app', 'Weight'),
         ];
     }
 

@@ -26,9 +26,15 @@ services:
       - ./:/app
       - ./docker/php/custom-config.ini:/usr/local/etc/php/conf.d/custom-config.ini
       - ./docker/php/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
-    environment:
-      VIRTUAL_HOST: api.lexuryscort.com
-      PHP_ENABLE_XDEBUG: 1
+    networks:
+      - proxy
+      - default
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.api-secure.entrypoints=websecure"
+      - "traefik.http.routers.api-secure.rule=Host(`api.lexuryscort.com`)"
+
 
   backend:
 #    depends_on:
@@ -45,11 +51,15 @@ services:
       - ./:/app
       - ./docker/php/custom-config.ini:/usr/local/etc/php/conf.d/custom-config.ini
       - ./docker/php/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
-    environment:
-      VIRTUAL_HOST: dashboard.lexuryscort.com
-      PHP_ENABLE_XDEBUG: 1
+    networks:
+      - proxy
+      - default
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.backend-secure.entrypoints=websecure"
+      - "traefik.http.routers.backend-secure.rule=Host(`backend.lexuryscort.com`)"
 
 networks:
-  default:
-    external:
-      name: nginx-proxy
+  proxy:
+    external: true
