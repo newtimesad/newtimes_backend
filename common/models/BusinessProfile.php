@@ -62,6 +62,9 @@ class BusinessProfile extends \yii\db\ActiveRecord
     const AFFILIATION_TYPE_AGENCY = 'AGENCY';
     const AFFILIATION_TYPE_INDEPENDENT = 'INDEPENDENT';
 
+    const AVAILABILITY_OUTCALL = 'Outcall';
+    const AVAILABILITY_INCALL = 'Incall';
+
     public $images;
 
     public $attributesChanged = false;
@@ -129,7 +132,7 @@ class BusinessProfile extends \yii\db\ActiveRecord
             'measurements' => Yii::t('app', 'Measurements (Bust-Waist-Hips)'),
             'affiliation' => Yii::t('app', 'Affiliation'),
             'available_to' => Yii::t('app', 'Available To'),
-            'aviability' => Yii::t('app', 'Aviability'),
+            'aviability' => Yii::t('app', 'Availability'),
             'city_id' => Yii::t('app', 'City'),
             'weight' => Yii::t('app', 'Weight'),
         ];

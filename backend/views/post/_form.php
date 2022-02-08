@@ -26,6 +26,7 @@ use yii\helpers\Html;
         <div class="card-body">
             <div class="row">
                 <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
+                    <?= $form->field($model, 'title')->textInput(['placeholder' => Yii::t('app', "Say hello...")]) ?>
                     <?= $form->field($model, '_locations')->widget(Select2::class, [
                         'data' => ArrayHelper::map(Location::find()->all(), 'id', 'label'),
                         'options' => [

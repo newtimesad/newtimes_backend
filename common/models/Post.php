@@ -24,6 +24,7 @@ use function foo\func;
  * @property-read mixed $locations
  * @property-read mixed $specialityCategories
  * @property SpecialityCategoryPost[] $specialityCategoriesPosts
+ * @property string $title [varchar(255)]
  */
 class Post extends ActiveRecord
 {
@@ -49,8 +50,8 @@ class Post extends ActiveRecord
     public function rules()
     {
         return [
-            [['_locations', '_services', '_specialityCategories', 'bio', 'type_id', 'business_profile_id'], 'required'],
-            [['bio'], 'string'],
+            [['_locations', '_services', '_specialityCategories', 'bio', 'type_id', 'business_profile_id', 'title'], 'required'],
+            [['bio', 'title'], 'string'],
             [['type_id', 'business_profile_id'], 'default', 'value' => null],
             [['type_id', 'business_profile_id'], 'integer'],
             [['status'], 'string', 'max' => 255],
@@ -86,6 +87,7 @@ class Post extends ActiveRecord
             'status' => Yii::t('app', 'Status'),
             'type_id' => Yii::t('app', 'Type'),
             'business_profile_id' => Yii::t('app', 'Profile'),
+            'title' => Yii::t('app', 'Slogan')
         ];
     }
 

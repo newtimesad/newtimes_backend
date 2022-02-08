@@ -63,7 +63,12 @@ $this->registerJsVar('selectedPictures', $selectedImages, $this::POS_BEGIN);
                                     ]) ?>
                                 </div>
                                 <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                                    <?= $form->field($model, 'aviability')->textInput(['maxlength' => true]) ?>
+                                    <?= $form->field($model, 'aviability')->dropDownList(
+                                            [
+                                                    BusinessProfile::AVAILABILITY_INCALL,
+                                                    BusinessProfile::AVAILABILITY_OUTCALL,
+                                            ]
+                                    ) ?>
 
                                     <?= $form->field($model, 'city_id')->dropDownList(
                                         ArrayHelper::map(City::find()->all(), 'id', 'name'),
