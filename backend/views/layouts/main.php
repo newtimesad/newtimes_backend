@@ -38,7 +38,7 @@ AdminLtePluginAsset::register($this);
             <!-- Main Sidebar Container -->
             <?= $this->render('_aside.php') ?>
         <?php endif; ?>
-        <div class="content-wrapper">
+        <div class="content-wrapper" style="background-color: #222222">
             <section class="content-header">
                 <div class="container-fluid">
                     <div class="row mb-2">
