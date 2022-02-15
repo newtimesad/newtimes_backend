@@ -91,7 +91,7 @@ use yii\helpers\Html;
         </div>
         <div class="card-footer">
             <div class="form-group">
-                <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-sm btn-success']) ?>
+                <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-sm btn-success', 'style'=>"background-color: orange; border-color: orange;"]) ?>
             </div>
         </div>
     </div>

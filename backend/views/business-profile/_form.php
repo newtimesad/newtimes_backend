@@ -226,7 +226,7 @@ $this->registerJsVar('selectedPictures', $selectedImages, $this::POS_BEGIN);
         </div>
         <div class="card-footer">
             <div class="form-group">
-                <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
+                <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success', 'style'=>"background-color: orange; border-color: orange;"]) ?>
             </div>
         </div>
     </div>

@@ -1,16 +1,6 @@
 <?php
 
-/*
- * This file is part of the 2amigos/yii2-usuario project.
- *
- * (c) 2amigOS! <http://2amigos.us/>
- *
- * For the full copyright and license information, please view
- * the LICENSE file that was distributed with this source code.
- */
-
 use backend\assets\AdminLtePluginAsset;
-use Da\User\Widget\ConnectWidget;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -66,7 +56,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 ' (' . Html::a(
                                     Yii::t('usuario', 'Forgot password?'),
                                     ['/user/recovery/request'],
-                                    ['tabindex' => '5']
+                                    ['tabindex' => '5', 'style'=>"color: orange"]
                                 )
                                 . ')' : '')
                         ) ?>
@@ -85,13 +75,14 @@ $this->params['breadcrumbs'][] = $this->title;
                 <p class="text-center">
                     <?= Html::a(
                         Yii::t('usuario', 'Didn\'t receive confirmation message?'),
-                        ['/user/registration/resend']
+                        ['/user/registration/resend'],
+                        ['style'=>"color: orange"]
                     ) ?>
                 </p>
             <?php endif ?>
             <?php if ($module->enableRegistration): ?>
                 <p class="text-center" style="color: white">
-                    <?= Html::a(Yii::t('usuario', 'Don\'t have an account? Sign up!'), ['/user/registration/register']) ?>
+                    <?= Html::a(Yii::t('usuario', 'Don\'t have an account? Sign up!'), ['/user/registration/register'], ['style'=>"color: orange"]) ?>
                 </p>
             <?php endif ?>
 

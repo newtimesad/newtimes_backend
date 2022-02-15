@@ -35,11 +35,11 @@ $this->title = "Sign-up";
                     'enableClientValidation' => false,
                 ]
             ); ?>
-            <div class="card">
+            <div class="card" style="background-color: black">
                 <div class="card-header">
-                    <span class="card-title"><?= Html::encode($this->title) ?></span>
+                    <span class="card-title" style="color: white"><?= Html::encode($this->title) ?></span>
                 </div>
-                <div class="card-body">
+                <div class="card-body" style="color: white">
 
 
                     <?= $form->field($model, 'email')->textInput(['autofocus' => true]) ?>
@@ -57,12 +57,12 @@ $this->title = "Sign-up";
 
                 </div>
                 <div class="card-footer">
-                    <?= Html::submitButton(Yii::t('usuario', 'Sign up'), ['class' => 'btn btn-success btn-block']) ?>
+                    <?= Html::submitButton(Yii::t('usuario', 'Sign up'), ['class' => 'btn btn-success btn-block', 'style' => 'background-color: orange']) ?>
 
                 </div>
             </div>
             <p class="text-center">
-                <?= Html::a(Yii::t('usuario', 'Already registered? Sign in!'), ['/user/security/login']) ?>
+                <?= Html::a(Yii::t('usuario', 'Already registered? Sign in!'), ['/user/security/login'], ['style'=>"color: orange"]) ?>
             </p>
         </div>
         <?php ActiveForm::end(); ?>

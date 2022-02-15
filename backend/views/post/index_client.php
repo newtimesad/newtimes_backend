@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="post-index">
 
 
-    <?= Html::a(Yii::t('app', 'New Post'), ['create'], ['class' => 'btn btn-sm btn-success mb-3']) ?>
+    <?= Html::a(Yii::t('app', 'New Post'), ['create'], ['class' => 'btn btn-sm btn-success mb-3', 'style'=>"background-color: orange; border-color: orange;"]) ?>
 
 
     <?php Pjax::begin(); ?>
