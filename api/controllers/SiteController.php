@@ -18,26 +18,30 @@ class SiteController extends Controller
     public function behaviors()
     {
         return [
-            'access' => [
-                'class' => AccessControl::className(),
-                'rules' => [
+            'corsFilter' => [
+                'class' => \yii\filters\Cors::className(),
+//                'only' => ['api'],//List of actions to be applied
+                'cors' =>
                     [
-                        'actions' => ['login', 'error'],
-                        'allow' => true,
-                    ],
-                    [
-                        'actions' => ['logout', 'index'],
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
-                ],
+                        'Origin' => ['*'],
+//                        'Access-Control-Request-Method' => ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'],
+////                        'Access-Control-Request-Headers' => ['*'],// Even you can filter by IP Address
+//                        'Access-Control-Allow-Credentials' => true,
+//                        'Access-Control-Max-Age' => 86400,
+//                        'Access-Control-Expose-Headers' => []
+                    ]
             ],
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'logout' => ['post'],
-                ],
-            ],
+//            'access' => [
+//                'class' => AccessControl::className(),
+//                'only' => ['confirm', 'confirm-new-email'],
+//                'rules' => [
+//                    [
+//                        'actions' => ['confirm', 'confirm-new-email'],
+//                        'allow' => true,
+//                        'roles' => ['?'],
+//                    ],
+//                ],
+//            ],
         ];
     }
 
@@ -63,40 +67,5 @@ class SiteController extends Controller
         return $this->render('index');
     }
 
-    /**
-     * Login action.
-     *
-     * @return string
-     */
-    public function actionLogin()
-    {
-        if (!Yii::$app->user->isGuest) {
-            return $this->goHome();
-        }
 
-        $this->layout = 'blank';
-
-        $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
-        } else {
-            $model->password = '';
-
-            return $this->render('login', [
-                'model' => $model,
-            ]);
-        }
-    }
-
-    /**
-     * Logout action.
-     *
-     * @return string
-     */
-    public function actionLogout()
-    {
-        Yii::$app->user->logout();
-
-        return $this->goHome();
-    }
 }

@@ -128,7 +128,7 @@ class PostController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return Yii::$app->user->can('admin') ? $this->redirect(['index']) : $this->redirect(['my-posts']);
         }
 
         return $this->render('update', [
