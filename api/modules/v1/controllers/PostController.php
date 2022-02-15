@@ -3,6 +3,9 @@
 namespace api\modules\v1\controllers;
 
 use api\models\Post;
+use api\models\PostSearch;
+use Yii;
+use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
 
 class PostController extends BaseActiveController
@@ -35,7 +38,6 @@ class PostController extends BaseActiveController
             'options',
             'index',
             'view',
-
         ];
 
         // setup access
@@ -52,5 +54,30 @@ class PostController extends BaseActiveController
         ];
 
         return $behaviors;
+    }
+
+    public function actions()
+    {
+        $actions = parent::actions();
+        $actions ['index']['prepareDataProvider'] = function ($action) {
+            $requestParams = Yii::$app->getRequest()->getBodyParams();
+            if (empty($requestParams)) {
+                $requestParams = Yii::$app->getRequest()->getQueryParams();
+            }
+            $searchClass = PostSearch::class;
+            $searchModel = new $searchClass;
+            $searchModel->status = Post::STATUS_ACCEPTED;
+            /** @var ActiveDataProvider $dataProvider */
+            $dataProvider = $searchModel->search($requestParams, true);
+            $dataProvider->pagination = false;
+
+            return $dataProvider;
+        };
+        //allow only read actions
+        unset($actions['update']);
+        unset($actions['create']);
+        unset($actions['delete']);
+
+        return $actions;
     }
 }

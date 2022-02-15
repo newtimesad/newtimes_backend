@@ -2,6 +2,7 @@
 
 namespace common\models;
 
+use api\models\Profile;
 use Yii;
 use yii\db\ActiveRecord;
 use function foo\func;
@@ -24,7 +25,9 @@ use function foo\func;
  * @property-read mixed $locations
  * @property-read mixed $specialityCategories
  * @property SpecialityCategoryPost[] $specialityCategoriesPosts
+ * @property-read mixed $price
  * @property string $title [varchar(255)]
+ * @property string $visiting
  */
 class Post extends ActiveRecord
 {
@@ -51,7 +54,7 @@ class Post extends ActiveRecord
     {
         return [
             [['_locations', '_services', '_specialityCategories', 'bio', 'type_id', 'business_profile_id', 'title'], 'required'],
-            [['bio', 'title'], 'string'],
+            [['bio', 'title', 'visiting'], 'string'],
             [['type_id', 'business_profile_id'], 'default', 'value' => null],
             [['type_id', 'business_profile_id'], 'integer'],
             [['status'], 'string', 'max' => 255],
@@ -87,7 +90,9 @@ class Post extends ActiveRecord
             'status' => Yii::t('app', 'Status'),
             'type_id' => Yii::t('app', 'Type'),
             'business_profile_id' => Yii::t('app', 'Profile'),
-            'title' => Yii::t('app', 'Slogan')
+            'title' => Yii::t('app', 'Slogan'),
+            'visiting' => Yii::t('app', 'Is visiting'),
+
         ];
     }
 
@@ -212,4 +217,8 @@ class Post extends ActiveRecord
 
         return $locationsPrice + $servicesPrice + $specialityCategoriesPrice + $this->type->price;
     }
+
+
+
+
 }

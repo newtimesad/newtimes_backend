@@ -12,7 +12,11 @@ class Profile extends \common\models\BusinessProfile
         $fields['email'] = 'emailStr';
         $fields['phone'] = 'phoneStr';
         $fields['available_to'] = 'formattedAvailableTo';
-
+        $fields['aviability'] = function($model){
+            return implode(' / ', $model->_availability);
+        };
         return $fields;
     }
+
+
 }
