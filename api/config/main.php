@@ -76,6 +76,7 @@ return [
             'showScriptName' => false,
             'enableStrictParsing' => true,
             'rules' => [
+                '' => 'site/index',
                 [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'v1/user',

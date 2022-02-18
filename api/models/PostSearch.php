@@ -1,10 +1,9 @@
 <?php
 
-namespace common\models;
+namespace api\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\Post;
 use yii\db\ActiveQuery;
 
 /**
@@ -13,13 +12,17 @@ use yii\db\ActiveQuery;
 class PostSearch extends Post
 {
     public $userId;
+    public $stateId;
+    public $cityId;
+    public $countryId;
+
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['id', 'type_id', 'business_profile_id', 'userId'], 'integer'],
+            [['id', 'type_id', 'business_profile_id', 'userId', 'cityId', 'stateId', 'countryId'], 'integer'],
             [['bio', 'status'], 'safe'],
         ];
     }
@@ -40,17 +43,14 @@ class PostSearch extends Post
      *
      * @return ActiveDataProvider
      */
-    public function search($params, $loadFilterModel=false)
+    public function search($params, $loadFilterModel = false)
     {
         $query = Post::find();
+        $query->innerJoin('business_profile', 'business_profile_id=business_profile.id');
+        $query->innerJoin('city', 'business_profile.city_id=city.id');
+        $query->innerJoin('state', 'city.state_id=state.id');
 
-        if(isset($this->userId)){
-            $query->innerJoinWith(['businessProfile' => function(ActiveQuery $q){
-                $q->andWhere(['user_id' => $this->userId]);
-            }]);
-        }
-
-        $loadFilterModel ?  $this->load($params, 'filter') : $this->load($params);
+        $loadFilterModel ? $this->load($params, 'filter') : $this->load($params);
 
         // add conditions that should always apply here
 
@@ -75,6 +75,22 @@ class PostSearch extends Post
 
         $query->andFilterWhere(['ilike', 'bio', $this->bio])
             ->andFilterWhere(['ilike', 'status', $this->status]);
+
+        if (isset($this->userId)) {
+            $query->andFilterWhere(['business_profile.user_id' => $this->userId]);
+        }
+
+        if (isset($this->cityId)) {
+            $query->andFilterWhere(['business_profile.city_id' => $this->cityId]);
+        }
+
+        if(isset($this->stateId)){
+            $query->andFilterWhere(['state.id' => $this->stateId]);
+        }
+
+        if(isset($this->countryId)){
+            $query->andFilterWhere(['state.country_id' => $this->countryId]);
+        }
 
         return $dataProvider;
     }
