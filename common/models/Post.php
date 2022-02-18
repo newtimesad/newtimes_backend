@@ -2,6 +2,7 @@
 
 namespace common\models;
 
+use api\models\Profile;
 use Yii;
 use yii\db\ActiveRecord;
 use function foo\func;
@@ -212,4 +213,8 @@ class Post extends ActiveRecord
 
         return $locationsPrice + $servicesPrice + $specialityCategoriesPrice + $this->type->price;
     }
+
+
+
+
 }
