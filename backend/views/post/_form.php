@@ -70,7 +70,7 @@ use yii\helpers\Html;
                             'toolbar' => [
                                 ['style1', ['style']],
                                 ['style2', ['bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript']],
-                                ['font', ['fontname', 'fontsize', 'color', 'clear']],
+                                ['font', ['fontname', 'fontsize', 'clear']],
                                 ['para', ['ul', 'ol', 'paragraph', 'height']],
                                 ['insert', ['link', 'hr']],
                             ],

@@ -69,6 +69,18 @@ class BusinessProfile extends \yii\db\ActiveRecord
 
     public $attributesChanged = false;
 
+    public $_availableTo = [];
+    public $_availability = [];
+
+    public static function populateRecord($record, $row)
+    {
+        parent::populateRecord($record, $row);
+        if(isset($record->available_to)){
+            $record->_availableTo = explode(';', $record->available_to);
+            $record->_availability = explode(';', $record->aviability);
+        }
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -93,8 +105,8 @@ class BusinessProfile extends \yii\db\ActiveRecord
                 'eye_color',
                 'measurements',
                 'affiliation',
-                'available_to',
-                'aviability',
+                '_availableTo',
+                '_availability',
                 'gender',
                 'weight',
             ], 'required'],
@@ -242,7 +254,9 @@ class BusinessProfile extends \yii\db\ActiveRecord
 
     public function getFormattedAvailableTo()
     {
-        return self::getAvailableToItems()[$this->available_to];
+        return implode(' / ', array_map(function($element){
+            return self::getAvailableToItems()[$element];
+        }, $this->_availableTo));
     }
 
     public static function getAvailableToItems()
@@ -319,6 +333,17 @@ class BusinessProfile extends \yii\db\ActiveRecord
         }
 
         $this->kyc->delete();
+
+        return true;
+    }
+
+    public function beforeSave($insert)
+    {
+        if (!parent::beforeSave($insert)) {
+            return false;
+        }
+        $this->available_to = implode(';', $this->_availableTo);
+        $this->aviability = implode(';', $this->_availability);
 
         return true;
     }
