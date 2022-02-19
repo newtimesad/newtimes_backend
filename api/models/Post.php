@@ -16,4 +16,6 @@ class Post extends \common\models\Post
     {
         return $this->hasOne(Profile::class, ['id' => 'business_profile_id']);
     }
+
+
 }

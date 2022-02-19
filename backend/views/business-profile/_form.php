@@ -4,6 +4,7 @@ use common\models\BusinessProfile;
 use common\models\City;
 use common\models\Kyc;
 use kartik\file\FileInput;
+use kartik\select2\Select2;
 use rmrevin\yii\fontawesome\FAS;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
@@ -63,12 +64,15 @@ $this->registerJsVar('selectedPictures', $selectedImages, $this::POS_BEGIN);
                                     ]) ?>
                                 </div>
                                 <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                                    <?= $form->field($model, 'aviability')->dropDownList(
-                                            [
-                                                    BusinessProfile::AVAILABILITY_INCALL,
-                                                    BusinessProfile::AVAILABILITY_OUTCALL,
-                                            ]
-                                    ) ?>
+                                    <?= $form->field($model, '_availability')->widget(Select2::class, [
+                                            'data' => [
+                                                BusinessProfile::AVAILABILITY_INCALL => BusinessProfile::AVAILABILITY_INCALL,
+                                                BusinessProfile::AVAILABILITY_OUTCALL => BusinessProfile::AVAILABILITY_OUTCALL,
+                                            ],
+                                        'options' => [
+                                                'multiple' => true
+                                        ]
+                                    ]) ?>
 
                                     <?= $form->field($model, 'city_id')->dropDownList(
                                         ArrayHelper::map(City::find()->all(), 'id', 'name'),
@@ -124,12 +128,13 @@ $this->registerJsVar('selectedPictures', $selectedImages, $this::POS_BEGIN);
                                     <?= $form->field($model, 'affiliation')->dropDownList($model::getAffiliationTypes()) ?>
                                 </div>
                                 <div class="col-sm-12 col-md-4 col-lg-3 col-xl-3">
-                                    <?= $form->field($model, 'available_to')->dropDownList(
-                                        BusinessProfile::getAvailableToItems(),
-                                        [
-                                            'prompt' => "-- Select --"
+                                    <?= $form->field($model, '_availableTo')->widget(Select2::class, [
+                                        'data' => BusinessProfile::getAvailableToItems(),
+                                        'options' => [
+                                            'multiple' => true
                                         ]
-                                    ) ?>
+                                    ]) ?>
+
                                 </div>
                             </div>
                         </div>
