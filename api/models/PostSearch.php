@@ -15,6 +15,7 @@ class PostSearch extends Post
     public $stateId;
     public $cityId;
     public $countryId;
+    public $serviceId;
 
     /**
      * {@inheritdoc}
@@ -22,7 +23,7 @@ class PostSearch extends Post
     public function rules()
     {
         return [
-            [['id', 'type_id', 'business_profile_id', 'userId', 'cityId', 'stateId', 'countryId'], 'integer'],
+            [['id', 'type_id', 'business_profile_id', 'userId', 'cityId', 'stateId', 'countryId', 'serviceId'], 'integer'],
             [['bio', 'status'], 'safe'],
         ];
     }
@@ -49,6 +50,7 @@ class PostSearch extends Post
         $query->innerJoin('business_profile', 'business_profile_id=business_profile.id');
         $query->innerJoin('city', 'business_profile.city_id=city.id');
         $query->innerJoin('state', 'city.state_id=state.id');
+        $query->innerJoin('post_service', 'post_service.post_id=post.id');
 
         $loadFilterModel ? $this->load($params, 'filter') : $this->load($params);
 
@@ -91,6 +93,12 @@ class PostSearch extends Post
         if(isset($this->countryId)){
             $query->andFilterWhere(['state.country_id' => $this->countryId]);
         }
+
+        if(isset($this->serviceId)){
+            $query->andFilterWhere(['post_service.service_id' => $this->serviceId]);
+        }
+
+
 
         return $dataProvider;
     }
