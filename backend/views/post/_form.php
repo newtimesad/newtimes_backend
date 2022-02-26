@@ -22,7 +22,7 @@ use yii\helpers\Html;
 <div class="post-form">
 
     <?php $form = ActiveForm::begin(); ?>
-    <div class="card">
+    <div class="card bg-dark">
         <div class="card-body">
             <div class="row">
                 <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">

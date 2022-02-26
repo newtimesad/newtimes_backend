@@ -41,12 +41,12 @@ $this->registerJsVar('selectedPictures', $selectedImages, $this::POS_BEGIN);
         'enableClientValidation' => true,
     ]); ?>
     <?= $form->field($model, 'attributesChanged')->hiddenInput(['value' => 0])->label(false) ?>
-    <div class="card">
+    <div class="card bg-dark">
         <div class="card-body">
             <div class="row">
                 <div class="col-12">
-                    <div class="card card-secondary">
-                        <div class="card-header">
+                    <div class="card bg-dark">
+                        <div class="card-header bg-gradient-secondary">
                             Basic Information
                         </div>
                         <div class="card-body">
@@ -89,8 +89,8 @@ $this->registerJsVar('selectedPictures', $selectedImages, $this::POS_BEGIN);
                 </div>
 
                 <div class="col-12">
-                    <div class="card card-secondary">
-                        <div class="card-header">
+                    <div class="card bg-dark">
+                        <div class="card-header bg-gradient-secondary">
                             Body Information
                         </div>
                         <div class="card-body">
@@ -141,7 +141,7 @@ $this->registerJsVar('selectedPictures', $selectedImages, $this::POS_BEGIN);
                     </div>
                 </div>
                 <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                    <div class="card">
+                    <div class="card bg-dark">
                         <div class="card-header bg-gradient-info">
                             <span class="card-title">Contact information</span>
                         </div>
@@ -152,7 +152,7 @@ $this->registerJsVar('selectedPictures', $selectedImages, $this::POS_BEGIN);
                     </div>
                 </div>
                 <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                    <div class="card">
+                    <div class="card bg-dark">
                         <div class="card-header bg-gradient-info">
                             <span class="card-title">Social Networks</span>
                         </div>
@@ -167,7 +167,7 @@ $this->registerJsVar('selectedPictures', $selectedImages, $this::POS_BEGIN);
                     </div>
                 </div>
                 <div class="col-12">
-                    <div class="card">
+                    <div class="card bg-dark">
                         <div class="card-header bg-gradient-dark">
                             <span class="card-title">
                                 Pictures
@@ -204,7 +204,7 @@ $this->registerJsVar('selectedPictures', $selectedImages, $this::POS_BEGIN);
                             <div class="card-header bg-gradient-red">
                                 <span class="card-title">Identity Verification</span>
                             </div>
-                            <div class="card-body">
+                            <div class="card-body bg-dark">
                                 <div class="row">
                                     <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
                                         <?= $form->field($kyc, 'document_picture')->widget(FileInput::class, [

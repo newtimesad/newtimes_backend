@@ -12,7 +12,6 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="business-profile-view">
 
-    <h1 style= 'color: white'><?= Html::encode($this->title) ?></h1>
 
     <p>
         <?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
@@ -29,8 +28,8 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= DetailView::widget([
             'model' => $model,
             'attributes' => [
-                'id',
-                'user_id',
+//                'id',
+//                'user_id',
                 'name',
                 'gender',
                 'age',
@@ -42,7 +41,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'affiliation',
                 'available_to',
                 'aviability',
-                'city_id',
+                'city.name',
             ],
         ]) ?>
     </div>

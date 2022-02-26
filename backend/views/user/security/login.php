@@ -18,10 +18,10 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <?= $this->render('/shared/_alert', ['module' => Yii::$app->getModule('user')]) ?>
 
-<div class="h-100">
-    <div class="row justify-content-center align-self-center">
-        <div class="col-sm-11 col-md-4 col-lg-4 col-xl-4">
-            <div class="card" style="background-color: black">
+<div class="container h-100 w-100">
+    <div class="row h-100 justify-content-center align-items-center" style="margin-top: 30%">
+        <div class="col-sm-11 col-md-4 col-lg-4 col-xl-4 text-center">
+            <div class="card bg-dark">
                 <div class="card-header">
                     <h3 class="card-title" style="color: white"><?= Html::encode($this->title) ?></h3>
                 </div>
@@ -85,7 +85,6 @@ $this->params['breadcrumbs'][] = $this->title;
                     <?= Html::a(Yii::t('usuario', 'Don\'t have an account? Sign up!'), ['/user/registration/register'], ['style'=>"color: orange"]) ?>
                 </p>
             <?php endif ?>
-
         </div>
     </div>
 </div>

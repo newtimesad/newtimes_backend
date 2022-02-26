@@ -8,7 +8,7 @@ use yii\bootstrap4\Html;
 
 
 ?>
-<div class="card">
+<div class="card bg-dark">
     <div class="card-body">
         <div class="row">
             <div class="col-sm-12 col-md-2 col-lg-2 col-xl-2">
@@ -18,19 +18,19 @@ use yii\bootstrap4\Html;
             </div>
             <div class="col-sm-12 col-md-5 col-lg-5 col-xl-5">
                 <ul class="list-group">
-                    <li class="list-group-item">
+                    <li class="list-group-item bg-dark">
                         <?= FAS::icon(FAS::_USER) ?>
                         <?= $profile->name ?>
                     </li>
-                    <li class="list-group-item">
+                    <li class="list-group-item bg-dark">
                         <?= FAS::icon(FAS::_ENVELOPE) ?>
                         <?= $profile->email->email ?>
                     </li>
-                    <li class="list-group-item">
+                    <li class="list-group-item bg-dark">
                         <?= FAS::icon(FAS::_PHONE) ?>
                         <?= $profile->phone->phone ?>
                     </li>
-                    <li class="list-group-item">
+                    <li class="list-group-item bg-dark">
                         <?= FAS::icon(FAS::_MAP_PIN) ?>
                         <?= "{$profile->city->name}, {$profile->city->state->name}, {$profile->city->state->country->name}" ?>
                     </li>

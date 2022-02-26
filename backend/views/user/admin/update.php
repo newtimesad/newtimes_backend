@@ -30,17 +30,17 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <div class="row">
     <div class="col-md-12">
-        <div class="card card-default">
+        <div class="card bg-dark">
             <div class="card-body">
                 <?= $this->render('/shared/_menu') ?>
                 <div class="row">
                     <div class="col-md-3">
-                        <div class="card card-default">
+                        <div class="card bg-dark">
                             <div class="card-body">
                                 <?= Nav::widget(
                                     [
                                         'options' => [
-                                            'class' => 'nav-pills nav-stacked',
+                                            'class' => 'bg-dark nav-pills nav-stacked',
                                         ],
                                         'items' => [
                                             [
@@ -118,7 +118,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         </div>
                     </div>
                     <div class="col-md-9">
-                        <div class="card card-default">
+                        <div class="card bg-dark">
                             <div class="card-body">
                                 <?= $content ?>
                             </div>
