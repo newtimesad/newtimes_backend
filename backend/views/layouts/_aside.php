@@ -4,16 +4,16 @@ use backend\widgets\Menu;
 use backend\components\Menu as MenuItem;
 
 ?>
-<aside class="main-sidebar sidebar-dark-primary elevation-4">
+<aside class="main-sidebar sidebar-dark-primary elevation-4 ">
     <!-- Brand Logo -->
     <div href="#" class="text-center">
         <img src="<?= Yii::getAlias("@web/images/logo.png") ?>"
-            alt="AdminLTE Logo" class="brand-image img-circle w-75">
+             alt="AdminLTE Logo" class="brand-image img-circle w-75">
         <!--            <span class="brand-text font-weight-light">AdminLTE 3</span>-->
     </div>
 
     <!-- Sidebar -->
-    <div class="sidebar">
+    <div class="sidebar" style="overflow-y: auto">
         <!-- Sidebar user (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="info">
@@ -22,16 +22,16 @@ use backend\components\Menu as MenuItem;
         </div>
 
         <!-- Sidebar Menu -->
-        <nav class="mt-2">
+        <nav class="mt-2" style="overflow-y: auto; height: 100vh;">
             <?=
-                    Menu::widget([
-                        'items' => MenuItem::getItems(),
-                        'encodeLabels' => false,
-                    'options' => ['class' => 'nav nav-pills nav-sidebar flex-column', 'data-widget' => 'treeview', 'role' => 'menu'],
-                    'linkTemplate' => '<a class="nav-link {class}" href="{url}">{label}</a>',
-                    'itemOptions' => ['class' => 'nav-item'],
-                    ])
-                ?>
+            Menu::widget([
+                'items' => MenuItem::getItems(),
+                'encodeLabels' => false,
+                'options' => ['class' => 'nav nav-pills nav-sidebar flex-column', 'data-widget' => 'treeview', 'role' => 'menu'],
+                'linkTemplate' => '<a class="nav-link {class}" href="{url}">{label}</a>',
+                'itemOptions' => ['class' => 'nav-item'],
+            ])
+            ?>
         </nav>
         <!-- /.sidebar-menu -->
     </div>

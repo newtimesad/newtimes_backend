@@ -12,5 +12,5 @@ return [
     'appName' => 'NewTimes',
     'defaultLanguage' => 'en',
     'jwtSecretCode' => "as&*^d.ASdasdgfhjsdASDNVasfbnvASM&@%676A%A%s45a4d65adasdjhHJGASd",
-    'backendBaseUrl' => "http://localhost:21080"
+    'backendBaseUrl' => "http://newtimes.local.cu"
 ];
