@@ -102,15 +102,15 @@ return [
     'container' => [
         'definitions' => [
             \yii\grid\GridView::class => [
-                'tableOptions' => ['class' => 'table table-head-fixed text-nowrap table-hover'],
-                'layout' => '<div class="card"><div class="card-body table-responsive p-0">{items}</div><div class="card-footer">{pager}</div></div>',
+                'tableOptions' => ['class' => 'table table-dark table-head-fixed text-nowrap table-hover'],
+                'layout' => '<div class="card bg-dark"><div class="card-body table-responsive p-0">{items}</div><div class="card-footer">{pager}</div></div>',
                 'pager' => [
                     'class' => \yii\widgets\LinkPager::class,
                     'options' => ['class' => 'pagination pagination-sm m-0 float-right'],
                     'linkContainerOptions' => ['class' => 'page-item'],
                     'linkOptions' => ['class' => 'page-link', 'data-pjax-scrollto' => '1'],
                     'disabledListItemSubTagOptions' => ['class' => 'page-link']
-                ]
+                ],
             ]
         ]
     ],

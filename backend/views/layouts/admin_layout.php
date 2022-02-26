@@ -21,7 +21,7 @@ use yii\bootstrap4\Nav;
 
 <div class="row">
     <div class="col-md-12">
-        <div class="card">
+        <div class="card bg-dark">
             <div class="card-body">
                 <?= Nav::widget(
     [

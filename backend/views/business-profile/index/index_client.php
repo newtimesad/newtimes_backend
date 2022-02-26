@@ -12,10 +12,10 @@ use yii\widgets\Pjax;
 $this->title = 'My profiles';
 ?>
 
-<div class="card">
+<div class="card bg-dark">
     <div class="card-header">
         <?= Html::a('Add a new profile', ['business-profile/create'], [
-            'class' => 'btn btn-success'
+            'class' => 'btn btn-success', 'style'=>"background-color: orange; border-color: orange;"
         ]) ?>
     </div>
     <div class="card-body">

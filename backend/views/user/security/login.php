@@ -1,16 +1,6 @@
 <?php
 
-/*
- * This file is part of the 2amigos/yii2-usuario project.
- *
- * (c) 2amigOS! <http://2amigos.us/>
- *
- * For the full copyright and license information, please view
- * the LICENSE file that was distributed with this source code.
- */
-
 use backend\assets\AdminLtePluginAsset;
-use Da\User\Widget\ConnectWidget;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -28,14 +18,14 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <?= $this->render('/shared/_alert', ['module' => Yii::$app->getModule('user')]) ?>
 
-<div class="h-100">
-    <div class="row justify-content-center align-self-center">
-        <div class="col-sm-11 col-md-4 col-lg-4 col-xl-4">
-            <div class="card">
+<div class="container h-100 w-100">
+    <div class="row h-100 justify-content-center align-items-center" style="margin-top: 30%">
+        <div class="col-sm-11 col-md-4 col-lg-4 col-xl-4 text-center">
+            <div class="card bg-dark">
                 <div class="card-header">
-                    <h3 class="card-title"><?= Html::encode($this->title) ?></h3>
+                    <h3 class="card-title" style="color: white"><?= Html::encode($this->title) ?></h3>
                 </div>
-                <div class="card-body">
+                <div class="card-body" style="color: white">
                     <?php $form = ActiveForm::begin(
                         [
                             'id' => $model->formName(),
@@ -66,7 +56,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 ' (' . Html::a(
                                     Yii::t('usuario', 'Forgot password?'),
                                     ['/user/recovery/request'],
-                                    ['tabindex' => '5']
+                                    ['tabindex' => '5', 'style'=>"color: orange"]
                                 )
                                 . ')' : '')
                         ) ?>
@@ -75,7 +65,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                     <?= Html::submitButton(
                         Yii::t('usuario', 'Sign in'),
-                        ['class' => 'btn btn-primary btn-block', 'tabindex' => '3']
+                        ['class' => 'btn btn-primary btn-block', 'style' => 'background-color: orange','tabindex' => '3']
                     ) ?>
 
                     <?php ActiveForm::end(); ?>
@@ -85,16 +75,16 @@ $this->params['breadcrumbs'][] = $this->title;
                 <p class="text-center">
                     <?= Html::a(
                         Yii::t('usuario', 'Didn\'t receive confirmation message?'),
-                        ['/user/registration/resend']
+                        ['/user/registration/resend'],
+                        ['style'=>"color: orange"]
                     ) ?>
                 </p>
             <?php endif ?>
             <?php if ($module->enableRegistration): ?>
-                <p class="text-center">
-                    <?= Html::a(Yii::t('usuario', 'Don\'t have an account? Sign up!'), ['/user/registration/register']) ?>
+                <p class="text-center" style="color: white">
+                    <?= Html::a(Yii::t('usuario', 'Don\'t have an account? Sign up!'), ['/user/registration/register'], ['style'=>"color: orange"]) ?>
                 </p>
             <?php endif ?>
-
         </div>
     </div>
 </div>

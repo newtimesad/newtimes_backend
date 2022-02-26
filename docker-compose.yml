@@ -43,4 +43,9 @@ services:
     environment:
       PHP_ENABLE_XDEBUG: 1
 
+  frontend:
+    build: frontend
+    ports:
+      - 22080:80
+
 

@@ -22,7 +22,7 @@ use yii\helpers\Html;
 <div class="post-form">
 
     <?php $form = ActiveForm::begin(); ?>
-    <div class="card">
+    <div class="card bg-dark">
         <div class="card-body">
             <div class="row">
                 <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
@@ -92,7 +92,7 @@ use yii\helpers\Html;
         </div>
         <div class="card-footer">
             <div class="form-group">
-                <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-sm btn-success']) ?>
+                <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-sm btn-success', 'style'=>"background-color: orange; border-color: orange;"]) ?>
             </div>
         </div>
     </div>
