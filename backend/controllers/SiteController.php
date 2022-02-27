@@ -1,6 +1,9 @@
 <?php
 namespace backend\controllers;
 
+use common\models\SystemDocs;
+use Da\User\Traits\ContainerAwareTrait;
+use Da\User\Validator\AjaxRequestModelValidator;
 use Yii;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
@@ -12,6 +15,7 @@ use common\models\LoginForm;
  */
 class SiteController extends Controller
 {
+    use ContainerAwareTrait;
     /**
      * {@inheritdoc}
      */
@@ -30,6 +34,12 @@ class SiteController extends Controller
                         'allow' => true,
                         'roles' => ['@'],
                     ],
+                    [
+                        'actions' => ['documentation'],
+                        'allow' => true,
+                        'roles' => ['admin'],
+                    ],
+
                 ],
             ],
             'verbs' => [
@@ -98,5 +108,26 @@ class SiteController extends Controller
         Yii::$app->user->logout();
 
         return $this->goHome();
+    }
+
+    public function actionDocumentation()
+    {
+        $documentation = SystemDocs::find()->one();
+        if(!$documentation){
+            $documentation = new SystemDocs();
+        }
+
+        $this->make(AjaxRequestModelValidator::class, [$documentation])->validate();
+
+        if($documentation->load(Yii::$app->request->post()) and $documentation->save()){
+            Yii::$app->session->setFlash('success', "Changes save successfully");
+
+        }elseif($documentation->hasErrors()){
+            Yii::$app->session->setFlash('danger', "An error occur while saving changes");
+        }
+
+        return $this->render('documentation', [
+            'documentation' => $documentation
+        ]);
     }
 }

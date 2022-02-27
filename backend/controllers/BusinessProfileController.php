@@ -267,7 +267,7 @@ class BusinessProfileController extends Controller
 
                 $transaction->commit();
                 Yii::$app->session->setFlash('success', "The profile has been created, please, wait until your identity be verified");
-                return $this->redirect(['business-profile/my-profiles']);
+                return Yii::$app->user->can('admin') ? $this->redirect(['business-profile/index']) :$this->redirect(['business-profile/my-profiles']);
             } elseif ($model->hasErrors()) {
                 $transaction->rollBack();
             }

@@ -180,6 +180,20 @@ class Menu
                 ]
             ],
 
+            [
+                'label' => Yii::t(
+                    'app',
+                    '{icon} <p>Documentation</p>',
+                    ['icon' => FAS::icon(FAS::_BOOK_OPEN)]
+                ),
+                //                    ['icon' => Html::tag('i', null, ['class' => 'far fa-circle nav-icon'])]),
+                'url' => ['//site/documentation'],
+                'action' => '//site/documentation',
+                'options' => [
+                    'class' => 'nav-item'
+                ]
+            ],
+
 
 
         ];
