@@ -77,6 +77,7 @@ return [
             'enableStrictParsing' => true,
             'rules' => [
                 '' => 'site/index',
+
                 [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'v1/user',
@@ -132,7 +133,11 @@ return [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'v1/speciality-category',
                 ],
-
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'v1/documentation',
+                    'pluralize' => false
+                ],
 
 
             ],

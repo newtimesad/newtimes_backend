@@ -105,13 +105,7 @@ use yii\helpers\Html;
 <?php
 $js = <<<JS
 $(function(){
-   $("#post-bio-container").removeClass('form-control');
-   $("div[class*=note-editor]").removeClass('panel');
-   $("div[class*=note-editor]").removeClass('panel-default');
-   $("div[class*=note-editor]").addClass('card');
-   $("div[class*=note-toolbar]").removeClass('panel-heading');
-   $("div[class*=note-toolbar]").addClass('card-header');
-   
+    $("#post-bio-container").removeClass('form-control');
 });
 JS;
 $this->registerJs($js);

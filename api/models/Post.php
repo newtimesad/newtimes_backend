@@ -17,5 +17,16 @@ class Post extends \common\models\Post
         return $this->hasOne(Profile::class, ['id' => 'business_profile_id']);
     }
 
+    public function fields()
+    {
+        $fields = parent::fields();
+
+        $fields['isVip'] = function($model){
+            return false;
+        };
+
+        return $fields;
+    }
+
 
 }

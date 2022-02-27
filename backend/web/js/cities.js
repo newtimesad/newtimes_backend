@@ -33,3 +33,12 @@ $(document).on('beforeSubmit', '#formCity', function (event){
 
    return false;
 });
+
+$(function(){
+    $("div[class*=note-editor]").removeClass('panel');
+    $("div[class*=note-editor]").removeClass('panel-default');
+    $("div[class*=note-editor]").addClass('card');
+    $("div[class*=note-toolbar]").removeClass('panel-heading');
+    $("div[class*=note-toolbar]").addClass('card-header');
+
+});
