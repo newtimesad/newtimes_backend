@@ -35,7 +35,7 @@ return [
                     'class' => RegistrationController::class
                 ]
             ],
-            'enableEmailConfirmation' => false,
+            'enableEmailConfirmation' => true,
             'administrators' => ['administrator'],
             'administratorPermissionName' => 'admin',
             // ...other configs from here: [Configuration Options](installation/configuration-options.md), e.g.

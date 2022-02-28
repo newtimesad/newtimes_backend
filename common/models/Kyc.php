@@ -2,6 +2,7 @@
 
 namespace common\models;
 
+use common\factory\MailFactory;
 use daxslab\behaviors\UploaderBehavior;
 use Yii;
 use yii\helpers\ArrayHelper;
@@ -99,6 +100,19 @@ class Kyc extends \yii\db\ActiveRecord
             'status' => Yii::t('app', 'Status'),
             'business_profile_id' => Yii::t('app', 'Business Profile ID'),
         ];
+    }
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+
+        if(!$insert and isset($changedAttributes['status']) and $this->status != $changedAttributes['status']){
+            if($this->status == self::KYC_STATUS_ACCEPTED){
+                MailFactory::makeKycAcceptedMailerService($this->businessProfile)->run();
+            }elseif ($this->status == self::KYC_STATUS_CANCELLED){
+                MailFactory::makeKycRejectedMailerService($this->businessProfile)->run();
+            }
+        }
     }
 
     /**

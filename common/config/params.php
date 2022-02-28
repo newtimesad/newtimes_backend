@@ -4,13 +4,15 @@ return [
     'admin.username' => 'admin',
     'admin.email' => 'admin@newtimes.com',
     'admin.password' => 'admin.123',
-    'supportEmail' => 'support@example.com',
-    'senderEmail' => 'noreply@example.com',
-    'senderName' => 'Example.com mailer',
+    'supportEmail' => 'lexuryescort@gmail.com',
+    'senderEmail' => 'lexuryescort@gmail.com',
+    'senderName' => 'LexuryScort',
     'user.passwordResetTokenExpire' => 3600,
     'user.passwordMinLength' => 8,
-    'appName' => 'NewTimes',
+    'appName' => 'LexuryScort',
     'defaultLanguage' => 'en',
     'jwtSecretCode' => "as&*^d.ASdasdgfhjsdASDNVasfbnvASM&@%676A%A%s45a4d65adasdjhHJGASd",
-    'backendBaseUrl' => "http://newtimes.local.cu"
+    'backendBaseUrl' => "https://dashboard.lexuryscort.com",
+    'email.username' => "",
+    'email.password' => ""
 ];
