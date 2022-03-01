@@ -110,24 +110,5 @@ class SiteController extends Controller
         return $this->goHome();
     }
 
-    public function actionDocumentation()
-    {
-        $documentation = SystemDocs::find()->one();
-        if(!$documentation){
-            $documentation = new SystemDocs();
-        }
 
-        $this->make(AjaxRequestModelValidator::class, [$documentation])->validate();
-
-        if($documentation->load(Yii::$app->request->post()) and $documentation->save()){
-            Yii::$app->session->setFlash('success', "Changes save successfully");
-
-        }elseif($documentation->hasErrors()){
-            Yii::$app->session->setFlash('danger', "An error occur while saving changes");
-        }
-
-        return $this->render('documentation', [
-            'documentation' => $documentation
-        ]);
-    }
 }
