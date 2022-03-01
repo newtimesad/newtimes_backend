@@ -47,15 +47,15 @@ class SystemDocs extends \yii\db\ActiveRecord
         return [
             'id' => Yii::t('app', 'ID'),
             'privacy' => Yii::t('app', 'Privacy'),
-            'terms_conditions' => Yii::t('app', 'Terms Conditions'),
-            'advertiser_agreement' => Yii::t('app', 'Advertiser Agreement'),
-            'about' => Yii::t('app', 'About'),
-            'exemption' => Yii::t('app', 'Exemption'),
-            'dmca_photo_complaints' => Yii::t('app', 'Dmca Photo Complaints'),
-            'trademarks' => Yii::t('app', 'Trademarks'),
-            'reporting_trafficking' => Yii::t('app', 'Reporting Trafficking'),
+            'terms_conditions' => Yii::t('app', 'Terms & Conditions'),
+            'advertiser_agreement' => Yii::t('app', 'Avertiser Agreement'),
+            'about' => Yii::t('app', 'About LexuryScort'),
+            'exemption' => Yii::t('app', '2257 Exemption'),
+            'dmca_photo_complaints' => Yii::t('app', 'DMCA/Photo Complaints'),
+            'trademarks' => Yii::t('app', 'Trademarks/IP'),
+            'reporting_trafficking' => Yii::t('app', 'Report Trafficking'),
             'law_enforcement' => Yii::t('app', 'Law Enforcement'),
-            'verified' => Yii::t('app', 'Verified'),
+            'verified' => Yii::t('app', 'LexuryScort Verified'),
         ];
     }
 }

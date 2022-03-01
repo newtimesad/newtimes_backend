@@ -187,8 +187,8 @@ class Menu
                     ['icon' => FAS::icon(FAS::_BOOK_OPEN)]
                 ),
                 //                    ['icon' => Html::tag('i', null, ['class' => 'far fa-circle nav-icon'])]),
-                'url' => ['//site/documentation'],
-                'action' => '//site/documentation',
+                'url' => ['//documentation/manage'],
+                'action' => '//documentation/manage',
                 'options' => [
                     'class' => 'nav-item'
                 ]

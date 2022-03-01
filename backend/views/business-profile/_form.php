@@ -210,17 +210,26 @@ $this->registerJsVar('selectedPictures', $selectedImages, $this::POS_BEGIN);
                                         <?= $form->field($kyc, 'document_picture')->widget(FileInput::class, [
                                             'options' => ['accept' => 'image/*'],
                                         ]) ?>
+                                        <span class="font-italic">
+                                            <?= Yii::t('app', "Upload a photo of your ID card") ?>
+                                        </span>
                                     </div>
                                     <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
                                         <?= $form->field($kyc, 'self_picture')->widget(FileInput::class, [
                                             'options' => ['accept' => 'image/*'],
                                         ]) ?>
+                                        <span class="font-italic">
+                                            <?= Yii::t('app', "Upload a selfie") ?>
+                                        </span>
                                     </div>
                                     <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
                                         <?= $form->field($kyc, 'self_picture_with_doc')->widget(FileInput::class, [
                                             'options' => ['accept' => 'image/*'],
                                         ]) ?>
                                         <h3>CODE: <strong><?= $kyc->code ?></strong></h3>
+                                        <span class="font-italic">
+                                            <?= Yii::t('app', "Write the code on a piece of paper and take a photo of yourself holding it") ?>
+                                        </span>
                                     </div>
                                 </div>
                             </div>
