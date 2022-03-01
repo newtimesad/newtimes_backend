@@ -27,7 +27,7 @@ class DocumentationController extends \yii\web\Controller
                     [
                         'actions' => ['list'],
                         'allow' => true,
-                        'roles' => ['?'],
+                        'roles' => ['?', '@'],
                     ],
                 ],
             ],
