@@ -22,77 +22,8 @@ use yii\web\Controller;
 use yii\web\Response;
 use yii\widgets\ActiveForm;
 
-class SecurityController extends Controller
+class SecurityController extends \Da\User\Controller\SecurityController
 {
-    use ContainerAwareTrait;
-    use ModuleAwareTrait;
-
-    protected $socialNetworkAccountQuery;
-
-    /**
-     * SecurityController constructor.
-     *
-     * @param string                    $id
-     * @param Module                    $module
-     * @param SocialNetworkAccountQuery $socialNetworkAccountQuery
-     * @param array                     $config
-     */
-    public function __construct(
-        $id,
-        Module $module,
-        SocialNetworkAccountQuery $socialNetworkAccountQuery,
-        array $config = []
-    ) {
-        $this->socialNetworkAccountQuery = $socialNetworkAccountQuery;
-        parent::__construct($id, $module, $config);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function behaviors()
-    {
-        return [
-            'access' => [
-                'class' => AccessControl::class,
-                'rules' => [
-                    [
-                        'allow' => true,
-                        'actions' => ['login', 'confirm', 'auth', 'blocked'],
-                        'roles' => ['?'],
-                    ],
-                    [
-                        'allow' => true,
-                        'actions' => ['login', 'auth', 'logout'],
-                        'roles' => ['@'],
-                    ],
-                ],
-            ],
-            'verbs' => [
-                'class' => VerbFilter::class,
-                'actions' => [
-                    'logout' => ['post'],
-                ],
-            ],
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function actions()
-    {
-        return [
-            'auth' => [
-                'class' => AuthAction::class,
-                // if user is not logged in, will try to log him in, otherwise
-                // will try to connect social account to user.
-                'successCallback' => Yii::$app->user->isGuest
-                    ? [$this, 'authenticate']
-                    : [$this, 'connect'],
-            ],
-        ];
-    }
 
     /**
      * Controller action responsible for handling login page and actions.

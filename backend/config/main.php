@@ -35,14 +35,14 @@ return [
                     'class' => RegistrationController::class
                 ]
             ],
-            'enableEmailConfirmation' => false,
+            'enableEmailConfirmation' => true,
             'administrators' => ['administrator'],
             'administratorPermissionName' => 'admin',
             // ...other configs from here: [Configuration Options](installation/configuration-options.md), e.g.
             'generatePasswords' => false,
             'switchIdentitySessionKey' => 'myown_usuario_admin_user_key',
             'enableSwitchIdentities' => true,
-            'allowUnconfirmedEmailLogin' => true,
+            'allowUnconfirmedEmailLogin' => false,
             'enableGdprCompliance' => false
         ],
     ],

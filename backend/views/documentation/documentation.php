@@ -79,6 +79,10 @@ $form = \yii\bootstrap4\ActiveForm::begin([
                 <?= $form->field($documentation, 'law_enforcement')->widget(\kartik\editors\Summernote::class, $editorConfig) ?>
             </div>
 
+            <div class="border mt-2 p-2">
+                <?= $form->field($documentation, 'verified')->widget(\kartik\editors\Summernote::class, $editorConfig) ?>
+            </div>
+
         </div>
     </div>
 <?php
