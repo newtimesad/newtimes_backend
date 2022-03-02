@@ -42,7 +42,7 @@ return [
             'generatePasswords' => false,
             'switchIdentitySessionKey' => 'myown_usuario_admin_user_key',
             'enableSwitchIdentities' => true,
-            'allowUnconfirmedEmailLogin' => true,
+            'allowUnconfirmedEmailLogin' => false,
             'enableGdprCompliance' => false
         ],
     ],

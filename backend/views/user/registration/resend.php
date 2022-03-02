@@ -9,6 +9,7 @@
  * the LICENSE file that was distributed with this source code.
  */
 
+use backend\assets\AdminLtePluginAsset;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -19,14 +20,16 @@ use yii\widgets\ActiveForm;
 
 $this->title = Yii::t('usuario', 'Request new confirmation message');
 $this->params['breadcrumbs'][] = $this->title;
+
+AdminLtePluginAsset::register($this);
 ?>
-<div class="row">
+<div class="row justify-content-center">
     <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title"><?= Html::encode($this->title) ?></h3>
+        <div class="card bg-dark">
+            <div class="card-header">
+                <h3 class="card-title text-warning"><?= Html::encode($this->title) ?></h3>
             </div>
-            <div class="panel-body">
+            <div class="card-body">
                 <?php $form = ActiveForm::begin(
                     [
                         'id' => $model->formName(),
