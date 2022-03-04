@@ -223,6 +223,7 @@ class BusinessProfileController extends Controller
      */
     public function actionUpdate($id)
     {
+        Url::remember(['business-profile/update', 'id' => $id], 'before-delete-picture');
         $model = $this->findModel($id);
         $phone = $model->phone;
         $email = $model->email;

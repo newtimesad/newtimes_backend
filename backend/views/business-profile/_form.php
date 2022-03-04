@@ -8,6 +8,7 @@ use kartik\select2\Select2;
 use rmrevin\yii\fontawesome\FAS;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\web\YiiAsset;
 use yii\widgets\ActiveForm;
 
@@ -31,6 +32,7 @@ if(!$model->isNewRecord){
 
 $this->registerJsVar('selectedPictures', $selectedImages, $this::POS_BEGIN);
 
+
 ?>
 
 <div class="business-profile-form">
@@ -40,6 +42,7 @@ $this->registerJsVar('selectedPictures', $selectedImages, $this::POS_BEGIN);
         'enableAjaxValidation' => true,
         'enableClientValidation' => true,
     ]); ?>
+    <?= $form->field($kyc, 'code')->hiddenInput()->label(false) ?>
     <?= $form->field($model, 'attributesChanged')->hiddenInput(['value' => 0])->label(false) ?>
     <div class="card bg-dark">
         <div class="card-body">
@@ -191,6 +194,16 @@ $this->registerJsVar('selectedPictures', $selectedImages, $this::POS_BEGIN);
                                     <?php foreach ($model->pictures as $picture): ?>
                                         <div class="col-sm-12 col-md-3 col-lg-3 col-xl-3">
                                             <img src="<?= $picture->url ?>" class="img-fluid img-thumbnail">
+                                            <?= Html::a(
+                                                FAS::icon(FAS::_TRASH) . ' Delete',
+                                                Url::to(['business-profile/remove-picture', 'id' => $picture->id]),
+                                                [
+                                                    'class' => 'btn btn-sm btn-danger mb-4 mt-1',
+                                                    'data' => [
+                                                        'confirm' => 'Are you sure you want to delete this picture?'
+                                                    ]
+                                                ]
+                                            ) ?>
                                         </div>
                                     <?php endforeach; ?>
                                 </div>

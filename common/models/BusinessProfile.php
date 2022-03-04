@@ -146,7 +146,7 @@ class BusinessProfile extends \yii\db\ActiveRecord
             'available_to' => Yii::t('app', 'Available To'),
             'aviability' => Yii::t('app', 'Availability'),
             'city_id' => Yii::t('app', 'City'),
-            'weight' => Yii::t('app', 'Weight'),
+            'weight' => Yii::t('app', 'Weight (Lb)'),
         ];
     }
 
