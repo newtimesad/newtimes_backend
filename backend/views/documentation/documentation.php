@@ -83,6 +83,12 @@ $form = \yii\bootstrap4\ActiveForm::begin([
                 <?= $form->field($documentation, 'verified')->widget(\kartik\editors\Summernote::class, $editorConfig) ?>
             </div>
 
+            <div class="border mt-2 p-2">
+                <?= $form->field($documentation, 'adults_advice')->widget(\kartik\editors\Summernote::class, $editorConfig) ?>
+            </div>
+
+
+
         </div>
     </div>
 <?php

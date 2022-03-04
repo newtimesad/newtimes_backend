@@ -35,7 +35,21 @@ class SystemDocs extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['privacy', 'terms_conditions', 'advertiser_agreement', 'about', 'exemption', 'dmca_photo_complaints', 'trademarks', 'reporting_trafficking', 'law_enforcement', 'verified'], 'string'],
+            [
+                [
+                    'privacy',
+                    'terms_conditions',
+                    'advertiser_agreement',
+                    'about',
+                    'exemption',
+                    'dmca_photo_complaints',
+                    'trademarks',
+                    'reporting_trafficking',
+                    'law_enforcement',
+                    'verified',
+                    'adults_advice'
+                ], 'string'
+            ],
         ];
     }
 
@@ -56,6 +70,7 @@ class SystemDocs extends \yii\db\ActiveRecord
             'reporting_trafficking' => Yii::t('app', 'Report Trafficking'),
             'law_enforcement' => Yii::t('app', 'Law Enforcement'),
             'verified' => Yii::t('app', 'LexuryScort Verified'),
+            'adults_advice' => Yii::t('app', 'Adults Advice'),
         ];
     }
 }
