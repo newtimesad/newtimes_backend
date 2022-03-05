@@ -9,25 +9,38 @@
  * the LICENSE file that was distributed with this source code.
  */
 
+use backend\assets\AdminLtePluginAsset;
+use http\Url;
+use rmrevin\yii\fontawesome\FAS;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /**
  * @var yii\web\View               $this
- * @var yii\widgets\ActiveForm     $form
+ * @var yii\bootstrap4\ActiveForm     $form
  * @var \Da\User\Form\RecoveryForm $model
  */
 
 $this->title = Yii::t('usuario', 'Recover your password');
-$this->params['breadcrumbs'][] = $this->title;
+//$this->params['breadcrumbs'][] = $this->title;
+
+AdminLtePluginAsset::register($this);
 ?>
-<div class="row">
-    <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title"><?= Html::encode($this->title) ?></h3>
+<div class="row justify-content-center">
+    <div class="col-md-4 col-sm-6 align-self-center">
+        <div class="card bg-dark">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <?= Html::encode($this->title) ?>
+                </h3>
+                <div class="float-right">
+                    <?= Html::a(
+                            FAS::icon(FAS::_LONG_ARROW_ALT_LEFT),
+                        \yii\helpers\Url::to(['//user/login'])
+                    ) ?>
+                </div>
             </div>
-            <div class="panel-body">
+            <div class="card-body">
                 <?php $form = ActiveForm::begin(
                     [
                         'id' => $model->formName(),
@@ -38,7 +51,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 <?= $form->field($model, 'email')->textInput(['autofocus' => true]) ?>
 
-                <?= Html::submitButton(Yii::t('usuario', 'Continue'), ['class' => 'btn btn-primary btn-block']) ?><br>
+                <?= Html::submitButton(Yii::t('usuario', 'Continue'), ['class' => 'btn btn-warning btn-block']) ?><br>
 
                 <?php ActiveForm::end(); ?>
             </div>

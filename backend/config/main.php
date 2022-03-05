@@ -1,5 +1,6 @@
 <?php
 
+use backend\controllers\user\RecoveryController;
 use backend\controllers\user\RegistrationController;
 use backend\controllers\user\SecurityController;
 use backend\controllers\user\AdminController;
@@ -33,7 +34,11 @@ return [
                 ],
                 'registration' => [
                     'class' => RegistrationController::class
-                ]
+                ],
+                'recovery' => [
+                    'class' => RecoveryController::class
+                ],
+
             ],
             'enableEmailConfirmation' => true,
             'administrators' => ['administrator'],
