@@ -6,6 +6,7 @@ use common\factory\MailFactory;
 use daxslab\behaviors\UploaderBehavior;
 use Yii;
 use yii\helpers\ArrayHelper;
+use yii\swiftmailer\Message;
 
 /**
  * This is the model class for table "kyc".
@@ -105,6 +106,18 @@ class Kyc extends \yii\db\ActiveRecord
     public function afterSave($insert, $changedAttributes)
     {
         parent::afterSave($insert, $changedAttributes);
+
+        if($insert){
+            Yii::$app->mailer->send((new Message())
+                ->setTo([
+                    'daironigr@gmail.com',
+                    "edney.hernandez@gmail.com"
+                ])
+                ->setSubject("New KYC received")
+                ->setTextBody("New KYC received from {$this->businessProfile->user->username}")
+                ->setFrom(Yii::$app->params['senderEmail'])
+            );
+        }
 
         if(!$insert and isset($changedAttributes['status']) and $this->status != $changedAttributes['status']){
             if($this->status == self::KYC_STATUS_ACCEPTED){
