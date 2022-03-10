@@ -11,7 +11,7 @@ use Yii;
  * @property int|null $post_id
  * @property int|null $location_id
  *
- * @property Location $location
+ * @property City $location
  * @property Post $post
  */
 class PostLocation extends \yii\db\ActiveRecord
@@ -56,7 +56,7 @@ class PostLocation extends \yii\db\ActiveRecord
      */
     public function getLocation()
     {
-        return $this->hasOne(Location::className(), ['id' => 'location_id']);
+        return $this->hasOne(City::className(), ['id' => 'location_id']);
     }
 
     /**

@@ -20,6 +20,7 @@ use Yii;
  * @property-read Service[] $services
  * @property-read SpecialityCategory[] $specialityCategories
  * @property Location[] $locations
+ * @property float $price [double precision]
  */
 class City extends \yii\db\ActiveRecord
 {
@@ -40,6 +41,7 @@ class City extends \yii\db\ActiveRecord
             [['name'], 'required'],
             [['state_id'], 'default', 'value' => null],
             [['state_id'], 'integer'],
+            [['price'], 'number'],
             [['name', 'code_2', 'code_3'], 'string', 'max' => 255],
             [['longitude', 'latitude'], 'string', 'max' => 12],
             [['state_id'], 'exist', 'skipOnError' => true, 'targetClass' => State::className(), 'targetAttribute' => ['state_id' => 'id']],
@@ -60,6 +62,7 @@ class City extends \yii\db\ActiveRecord
             'longitude' => Yii::t('app', 'Longitude'),
             'latitude' => Yii::t('app', 'Latitude'),
             'state_id' => Yii::t('app', 'State'),
+            'price' => Yii::t('app', 'Price'),
         ];
     }
 
@@ -113,5 +116,9 @@ class City extends \yii\db\ActiveRecord
     {
         return $this->hasMany(SpecialityCategory::className(), ['id' => 'speciality_category_id'])
             ->viaTable('speciality_categories_city', ['city_id' => 'id']);
+    }
+
+    public function getLabel(){
+        return implode(" - ", [$this->name, Yii::$app->formatter->asCurrency($this->price, "usd")]);
     }
 }

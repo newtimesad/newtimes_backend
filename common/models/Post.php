@@ -183,7 +183,7 @@ class Post extends ActiveRecord
 
     public function getLocations()
     {
-        return $this->hasMany(Location::class, ['id' => 'location_id'])
+        return $this->hasMany(City::class, ['id' => 'location_id'])
             ->viaTable('post_location', ['post_id' => 'id']);
     }
 

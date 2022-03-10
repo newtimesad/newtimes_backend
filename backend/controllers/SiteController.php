@@ -70,6 +70,9 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+        if(Yii::$app->user->can('client')){
+            $this->redirect(['/business-profile/my-profiles']);
+        }
         return $this->render('index');
     }
 

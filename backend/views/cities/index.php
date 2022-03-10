@@ -34,7 +34,7 @@ $this->registerJsFile(Yii::getAlias("@web/js/cities.js"), [
     </p>
 
     <?php Pjax::begin([
-            'id' => 'pjax-cities'
+        'id' => 'pjax-cities'
     ]); ?>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
@@ -46,6 +46,12 @@ $this->registerJsFile(Yii::getAlias("@web/js/cities.js"), [
 
             'name',
             'code_2',
+            [
+                'attribute' => 'price',
+                'value' => function ($model) {
+                    return Yii::$app->formatter->asCurrency($model->price, 'usd');
+                }
+            ],
             ['attribute' => 'state.name',
                 'label' => 'State',
                 'filter' => Html::activeDropDownList(
@@ -64,18 +70,18 @@ $this->registerJsFile(Yii::getAlias("@web/js/cities.js"), [
             ],
 
             [
-                    'class' => 'yii\grid\ActionColumn',
+                'class' => 'yii\grid\ActionColumn',
                 'template' => "{update} {delete}",
                 'buttons' => [
-                        'update' => function($url, $model, $key){
+                    'update' => function ($url, $model, $key) {
 
-                            return FAS::icon(FontAwesome::_EDIT, [
-                                    'class' => 'btn-create-update-city text-warning',
-                                'data' => [
-                                        'url' => $url
-                                ]
-                            ]);
-                        }
+                        return FAS::icon(FontAwesome::_EDIT, [
+                            'class' => 'btn-create-update-city text-warning',
+                            'data' => [
+                                'url' => $url
+                            ]
+                        ]);
+                    }
                 ]
             ],
         ],

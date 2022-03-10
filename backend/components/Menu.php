@@ -64,20 +64,6 @@ class Menu
             [
                 'label' => Yii::t(
                     'app',
-                    '{icon} <p>Locations</p>',
-                    ['icon' => FAS::icon(FAS::_MAP_PIN)]
-                ),
-    //                    ['icon' => Html::tag('i', null, ['class' => 'far fa-circle nav-icon'])]),
-                'url' => ['//location/index'],
-                'action' => '/location/index',
-                'options' => [
-                    'class' => 'nav-item'
-                ]
-            ],
-            
-            [
-                'label' => Yii::t(
-                    'app',
                     '{icon} <p>Service</p>',
                     ['icon' => FAS::icon(FAS::_HAND_HOLDING)]
                 ),
@@ -204,6 +190,21 @@ class Menu
     public static function getClientItems()
     {
         return [
+
+            [
+                'label' => Yii::t(
+                    'app',
+                    '{icon} <p>Profiles</p>',
+                    ['icon' => FAS::icon(FAS::_USER_FRIENDS)]
+                ),
+                //                    ['icon' => Html::tag('i', null, ['class' => 'far fa-circle nav-icon'])]),
+                'url' => ['//business-profile/my-profiles'],
+                'action' => '/business-profile/my-profiles',
+
+                'options' => [
+                    'class' => 'nav-item'
+                ]
+            ],
             [
                 'label' => Yii::t(
                     'app',
@@ -218,20 +219,7 @@ class Menu
                     'class' => 'nav-item'
                 ]
             ],
-            [
-                'label' => Yii::t(
-                    'app',
-                    '{icon} <p>Profiles</p>',
-                    ['icon' => FAS::icon(FAS::_USER_FRIENDS)]
-                ),
-    //                    ['icon' => Html::tag('i', null, ['class' => 'far fa-circle nav-icon'])]),
-                'url' => ['//business-profile/my-profiles'],
-                'action' => '/business-profile/my-profiles',
-                
-                'options' => [
-                    'class' => 'nav-item'
-                ]
-            ],
+
         ];
     }
 }

@@ -1,6 +1,7 @@
 <?php
 
 use common\models\BusinessProfile;
+use common\models\City;
 use common\models\Kyc;
 use common\models\Location;
 use common\models\PostType;
@@ -29,7 +30,7 @@ use yii\helpers\Html;
                     <?= $form->field($model, 'title')->textInput(['placeholder' => Yii::t('app', "Say hello...")]) ?>
                     <?= $form->field($model, 'visiting')->textInput(['placeholder' => Yii::t('app', "Visiting until...")]) ?>
                     <?= $form->field($model, '_locations')->widget(Select2::class, [
-                        'data' => ArrayHelper::map(Location::find()->all(), 'id', 'label'),
+                        'data' => ArrayHelper::map(City::find()->all(), 'id', 'label'),
                         'options' => [
                             'multiple' => true,
                             'prompt' => "Select locations"
