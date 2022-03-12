@@ -14,6 +14,8 @@ use kartik\select2\Select2;
 use yii\db\ActiveQuery;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
+use yii\helpers\Url;
+use yii\web\JsExpression;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Post */
@@ -30,10 +32,26 @@ use yii\helpers\Html;
                     <?= $form->field($model, 'title')->textInput(['placeholder' => Yii::t('app', "Say hello...")]) ?>
                     <?= $form->field($model, 'visiting')->textInput(['placeholder' => Yii::t('app', "Visiting until...")]) ?>
                     <?= $form->field($model, '_locations')->widget(Select2::class, [
-                        'data' => ArrayHelper::map(City::find()->all(), 'id', 'label'),
+                        'data' => [],
                         'options' => [
                             'multiple' => true,
                             'prompt' => "Select locations"
+                        ],
+                        'pluginOptions' => [
+                            'allowClear' => true,
+                            'minimumInputLength' => 3,
+                            'language' => [
+                                'errorLoading' => new JsExpression("function () { return '" . Yii::t('app', 'Waiting for results ...') . "'; }"),
+                            ],
+                            'ajax' => [
+                                'url' => Url::to(['city/get-cities-ajax']),
+                                'dataType' => 'json',
+                                'data' => new JsExpression('function(params) { return {q:params.term}; }'),
+                                'cache' => true
+                            ],
+                            'escapeMarkup' => new JsExpression('function (markup) { return markup; }'),
+                            'templateResult' => new JsExpression('function(item) { return item.text; }'),
+//            'templateSelection' => new JsExpression('function (item) { console.log(item.text);item.text }'),
                         ]
                     ]) ?>
                     <?= $form->field($model, '_services')->widget(Select2::class, [

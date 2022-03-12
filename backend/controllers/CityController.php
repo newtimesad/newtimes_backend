@@ -7,6 +7,7 @@ use Yii;
 use common\models\City;
 use common\models\CitySearch;
 use yii\bootstrap4\ActiveForm;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -140,6 +141,29 @@ class CityController extends Controller
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+    }
+
+    public function actionGetCitiesAjax($q = null, $id = null)
+    {
+        $out = ['results' => ['id' => '', 'text' => '']];
+        if (!is_null($q)) {
+            $cities = City::find()
+                ->where([
+                    'ilike',
+                    'name',
+                    $q
+                ])
+                ->orderBy('state_id')
+                ->all();
+            $out['results'] = array_map(function($item){
+                return ['id' => $item->id, 'text' => $item->label];
+            }, $cities);
+        }
+        elseif ($id > 0) {
+            $out['results'] = ['id' => $id, 'text' => City::find($id)->name];
+        }
+
+        return $this->asJson($out);
     }
 
     /**
