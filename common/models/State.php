@@ -17,6 +17,7 @@ use Yii;
  *
  * @property City[] $cities
  * @property Country $country
+ * @property bool $available [boolean]
  */
 class State extends \yii\db\ActiveRecord
 {
@@ -40,7 +41,8 @@ class State extends \yii\db\ActiveRecord
             [['name', 'code_2', 'code_3'], 'string', 'max' => 255],
             [['longitude', 'latitude'], 'string', 'max' => 12],
             [['country_id'], 'exist', 'skipOnError' => true, 'targetClass' => Country::className(), 'targetAttribute' => ['country_id' => 'id']],
-            [['name'], 'unique', 'targetAttribute' => ['name', 'country_id'], 'message' => 'This state has been already added']
+            [['name'], 'unique', 'targetAttribute' => ['name', 'country_id'], 'message' => 'This state has been already added'],
+            [['available'], 'boolean']
         ];
     }
 
@@ -56,7 +58,8 @@ class State extends \yii\db\ActiveRecord
             'code_3' => Yii::t('app', 'Code 3'),
             'longitude' => Yii::t('app', 'Longitude'),
             'latitude' => Yii::t('app', 'Latitude'),
-            'country_id' => Yii::t('app', 'Country ID'),
+            'country_id' => Yii::t('app', 'Country'),
+            'available' => Yii::t('app', 'Available'),
         ];
     }
 
@@ -80,11 +83,16 @@ class State extends \yii\db\ActiveRecord
         return $this->hasOne(Country::className(), ['id' => 'country_id']);
     }
 
+    public function getAvailableCities()
+    {
+        return $this->getCities()->andWhere(['available' => true]);
+    }
+
     public function extraFields()
     {
         $extraFields = parent::extraFields();
 
-        $extraFields[] = 'cities';
+        $extraFields['cities'] = 'availableCities';
 
         return $extraFields;
     }

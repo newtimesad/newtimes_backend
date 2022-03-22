@@ -36,6 +36,15 @@ use yii\widgets\ActiveForm;
         <div class="col-12">
             <?= $form->field($model, 'country_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Country::find()->all(), 'id', 'name')) ?>
         </div>
+        <div class="col-12">
+            <?= $form->field($model, 'available')->widget(\kartik\switchinput\SwitchInput::class, [
+                'pluginOptions' => [
+                    'onText' => "Yes",
+                    'offText' => "No"
+                ]
+            ]) ?>
+        </div>
+
     </div>
 
     <div class="form-group">

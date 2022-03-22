@@ -15,6 +15,7 @@ use Yii;
  * @property string|null $latitude
  *
  * @property State[] $states
+ * @property bool $available [boolean]
  */
 class Country extends \yii\db\ActiveRecord
 {
@@ -37,7 +38,8 @@ class Country extends \yii\db\ActiveRecord
             [['code_2'], 'string', 'max' => 2],
             [['code_3'], 'string', 'max' => 3],
             [['longitude', 'latitude'], 'string', 'max' => 12],
-            [['name'], 'unique']
+            [['name'], 'unique'],
+            [['available'], 'boolean']
         ];
     }
 
@@ -53,6 +55,7 @@ class Country extends \yii\db\ActiveRecord
             'code_3' => Yii::t('app', 'Code 3'),
             'longitude' => Yii::t('app', 'Longitude'),
             'latitude' => Yii::t('app', 'Latitude'),
+            'available' => Yii::t('app', 'Available'),
         ];
     }
 
@@ -66,11 +69,16 @@ class Country extends \yii\db\ActiveRecord
         return $this->hasMany(State::className(), ['country_id' => 'id']);
     }
 
+    public function getAvailableStates()
+    {
+        return $this->getStates()->andFilterWhere(['available' => true]);
+    }
+
     public function extraFields()
     {
         $extraFields = parent::extraFields();
 
-        $extraFields[] = 'states';
+        $extraFields['states'] = 'availableStates';
 
         return $extraFields;
     }

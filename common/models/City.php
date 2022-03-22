@@ -21,6 +21,7 @@ use Yii;
  * @property-read SpecialityCategory[] $specialityCategories
  * @property Location[] $locations
  * @property float $price [double precision]
+ * @property bool $available [boolean]
  */
 class City extends \yii\db\ActiveRecord
 {
@@ -45,7 +46,8 @@ class City extends \yii\db\ActiveRecord
             [['name', 'code_2', 'code_3'], 'string', 'max' => 255],
             [['longitude', 'latitude'], 'string', 'max' => 12],
             [['state_id'], 'exist', 'skipOnError' => true, 'targetClass' => State::className(), 'targetAttribute' => ['state_id' => 'id']],
-            [['name'], 'unique', 'targetAttribute' => ['name','state_id'], 'message' => 'This city already exists on selected state']
+            [['name'], 'unique', 'targetAttribute' => ['name','state_id'], 'message' => 'This city already exists on selected state'],
+            [['available'], 'boolean']
         ];
     }
 
@@ -63,6 +65,7 @@ class City extends \yii\db\ActiveRecord
             'latitude' => Yii::t('app', 'Latitude'),
             'state_id' => Yii::t('app', 'State'),
             'price' => Yii::t('app', 'Price'),
+            'available' => Yii::t('app', 'Available'),
         ];
     }
 
@@ -95,16 +98,6 @@ class City extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Service::className(), ['id' => 'service_id'])
             ->viaTable('city_service', ['city_id' => 'id']);
-    }
-
-    /**
-     * Gets query for [[Locations]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getLocations()
-    {
-        return $this->hasMany(Location::className(), ['city_id' => 'id']);
     }
 
     /**
