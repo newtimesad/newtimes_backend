@@ -6,16 +6,19 @@ use yii\data\ActiveDataProvider;
 
 class StateSearch extends State
 {
-
+    public $cityAvailable;
     public function rules()
     {
         return [
             [['country_id'], 'integer'],
             [['name', 'code_2', 'code_3'], 'string', 'max' => 255],
-            [['longitude', 'latitude'], 'string', 'max' => 12],];
+            [['longitude', 'latitude'], 'string', 'max' => 12],
+            [['available'], 'boolean']
+        ];
     }
 
-    public function search($params, $loadFilterForm = false){
+    public function search($params, $loadFilterForm = false)
+    {
         $query = State::find();
 
         $dataProvider = new ActiveDataProvider([
@@ -24,16 +27,17 @@ class StateSearch extends State
 
         $loadFilterForm ? $this->load($params, 'filter') : $this->load($params);
 
-        if(!$this->validate()){
+        if (!$this->validate()) {
             return $dataProvider;
         }
         $query->andFilterWhere([
             'name' => $this->name,
             'code_2' => $this->code_2,
             'code_3' => $this->code_3,
+            'available' => $this->available
         ]);
 
-        if(isset($this->country_id)){
+        if (isset($this->country_id)) {
             $query->andWhere(['country_id' => $this->country_id]);
         }
         return $dataProvider;

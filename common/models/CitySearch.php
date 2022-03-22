@@ -19,6 +19,7 @@ class CitySearch extends City
         return [
             [['id', 'state_id'], 'integer'],
             [['name', 'code_2', 'code_3', 'longitude', 'latitude'], 'safe'],
+            [['available'], 'boolean']
         ];
     }
 
@@ -66,7 +67,9 @@ class CitySearch extends City
             ->andFilterWhere(['ilike', 'code_2', $this->code_2])
             ->andFilterWhere(['ilike', 'code_3', $this->code_3])
             ->andFilterWhere(['ilike', 'longitude', $this->longitude])
-            ->andFilterWhere(['ilike', 'latitude', $this->latitude]);
+            ->andFilterWhere(['ilike', 'latitude', $this->latitude])
+            ->andFilterWhere(['available' => $this->available]);
+
 
         return $dataProvider;
     }

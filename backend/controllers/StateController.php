@@ -39,7 +39,14 @@ class StateController extends Controller
     {
         $searchModel = new StateSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
+        $dataProvider->setSort([
+            'attributes' => [
+                'id' => [
+                    'default' => SORT_ASC
+                ]
+            ]
+        ]);
+        $dataProvider->query->orderBy(['id' => SORT_ASC]);
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,

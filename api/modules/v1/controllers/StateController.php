@@ -20,6 +20,7 @@ class StateController extends BaseActiveController
             }
 
             $searchModel = new StateSearch();
+            $searchModel->available = true;
             $dataProvider = $searchModel->search($requestParams, true);
             $dataProvider->pagination = false;
             return $dataProvider;
