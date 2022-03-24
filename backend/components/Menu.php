@@ -13,6 +13,8 @@ class Menu
             return self::getAdminItems();
         }elseif(Yii::$app->user->can('client')){
             return self::getClientItems();
+        }else{
+            return self::getManagerItems();
         }
         return [];
     }
@@ -187,6 +189,54 @@ class Menu
         return $items;
     }
 
+    public static function getManagerItems()
+    {
+        $items = [
+
+            [
+                'label' => Yii::t(
+                    'app',
+                    '{icon} <p>Profiles</p>',
+                    ['icon' => FAS::icon(FAS::_USERS)]
+                ),
+                //                    ['icon' => Html::tag('i', null, ['class' => 'far fa-circle nav-icon'])]),
+                'url' => ['//business-profile/index'],
+                'action' => '/business-profile/index',
+                'options' => [
+                    'class' => 'nav-item'
+                ]
+            ],
+
+            [
+                'label' => Yii::t(
+                    'app',
+                    '{icon} <p>KYC</p>',
+                    ['icon' => FAS::icon(FAS::_USER_SECRET)]
+                ),
+                //                    ['icon' => Html::tag('i', null, ['class' => 'far fa-circle nav-icon'])]),
+                'url' => ['//kyc/index'],
+                'action' => '/kyc/index',
+                'options' => [
+                    'class' => 'nav-item'
+                ]
+            ],
+            [
+                'label' => Yii::t(
+                    'app',
+                    '{icon} <p>Posts</p>',
+                    ['icon' => FAS::icon(FAS::_SHIELD_ALT)]
+                ),
+                //                    ['icon' => Html::tag('i', null, ['class' => 'far fa-circle nav-icon'])]),
+                'url' => ['//post/index'],
+                'action' => '/post/index',
+                'options' => [
+                    'class' => 'nav-item'
+                ]
+            ],
+        ];
+
+        return $items;
+    }
     public static function getClientItems()
     {
         return [
