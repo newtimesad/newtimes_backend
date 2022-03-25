@@ -153,6 +153,9 @@ class CityController extends Controller
                     'name',
                     $q
                 ])
+                ->andWhere([
+                    'available' => true
+                ])
                 ->orderBy('state_id')
                 ->all();
             $out['results'] = array_map(function($item){
