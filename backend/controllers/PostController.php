@@ -128,7 +128,7 @@ class PostController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return Yii::$app->user->can('admin') ? $this->redirect(['index']) : $this->redirect(['my-posts']);
+            return (Yii::$app->user->can('admin') || Yii::$app->user->can('manager')) ? $this->redirect(['index']) : $this->redirect(['my-posts']);
         }
 
         return $this->render('update', [
@@ -147,7 +147,7 @@ class PostController extends Controller
     {
         $this->findModel($id)->delete();
 
-        return $this->redirect(['index']);
+        return (Yii::$app->user->can('admin') || Yii::$app->user->can('manager')) ? $this->redirect(['index']) : $this->redirect(['my-posts']);
     }
 
     public function actionChangeStatus($id, $status)

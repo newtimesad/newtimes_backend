@@ -40,7 +40,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => function ($model) {
                     /** @var Post $model */
                     return implode(' ', array_map(function ($location) {
-                        /** @var Location $location */
+                        /** @var \common\models\City $location */
                         return Html::tag("span", $location->name, ['class' => 'badge badge-secondary']);
                     }, $model->locations));
                 }

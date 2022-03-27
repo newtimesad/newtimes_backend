@@ -32,7 +32,7 @@ use yii\web\JsExpression;
                     <?= $form->field($model, 'title')->textInput(['placeholder' => Yii::t('app', "Say hello...")]) ?>
                     <?= $form->field($model, 'visiting')->textInput(['placeholder' => Yii::t('app', "Visiting until...")]) ?>
                     <?= $form->field($model, '_locations')->widget(Select2::class, [
-                        'data' => [],
+                        'data' => ArrayHelper::map($model->locations, 'id', 'name'),
                         'options' => [
                             'multiple' => true,
                             'prompt' => "Select locations"
