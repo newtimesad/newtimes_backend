@@ -62,10 +62,10 @@ class KycSearch extends Kyc
             'business_profile_id' => $this->business_profile_id,
         ]);
 
-        $query->andFilterWhere(['ilike', 'document_picture', $this->document_picture])
-            ->andFilterWhere(['ilike', 'self_picture', $this->self_picture])
-            ->andFilterWhere(['ilike', 'self_picture_with_doc', $this->self_picture_with_doc])
-            ->andFilterWhere(['ilike', 'status', $this->status]);
+        $query->andFilterWhere(['like', 'document_picture', $this->document_picture])
+            ->andFilterWhere(['like', 'self_picture', $this->self_picture])
+            ->andFilterWhere(['like', 'self_picture_with_doc', $this->self_picture_with_doc])
+            ->andFilterWhere(['like', 'status', $this->status]);
 
         return $dataProvider;
     }

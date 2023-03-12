@@ -3,7 +3,6 @@
 use common\models\BusinessProfile;
 use common\models\City;
 use common\models\Kyc;
-use common\models\Location;
 use common\models\PostType;
 use common\models\Service;
 use common\models\SpecialityCategory;

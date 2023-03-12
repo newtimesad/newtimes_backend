@@ -62,11 +62,11 @@ class CountrySearch extends Country
             'id' => $this->id,
         ]);
 
-        $query->andFilterWhere(['ilike', 'name', $this->name])
-            ->andFilterWhere(['ilike', 'code_2', $this->code_2])
-            ->andFilterWhere(['ilike', 'code_3', $this->code_3])
-            ->andFilterWhere(['ilike', 'longitude', $this->longitude])
-            ->andFilterWhere(['ilike', 'latitude', $this->latitude])
+        $query->andFilterWhere(['like', 'name', $this->name])
+            ->andFilterWhere(['like', 'code_2', $this->code_2])
+            ->andFilterWhere(['like', 'code_3', $this->code_3])
+            ->andFilterWhere(['like', 'longitude', $this->longitude])
+            ->andFilterWhere(['like', 'latitude', $this->latitude])
             ->andFilterWhere(['available' => $this->available]);
 
         return $dataProvider;

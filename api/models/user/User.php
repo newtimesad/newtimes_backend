@@ -111,7 +111,7 @@ class User extends \common\models\User
             ->andWhere([
                 '>',
                 'access_token_expired_at',
-                new Expression('extract(epoch from now())')
+                new Expression('UNIX_TIMESTAMP()')
             ])->one();
 
         if ($user !== null &&
@@ -133,7 +133,7 @@ class User extends \common\models\User
     {
         // update client login, ip
         $this->last_login_ip = Yii::$app->request->getUserIP();
-        $this->last_login_at = new Expression('extract(epoch from now())');
+        $this->last_login_at = new Expression('UNIX_TIMESTAMP()');
 
         // check time is expired or not
         if ($forceRegenerate == true

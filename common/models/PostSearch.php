@@ -73,8 +73,8 @@ class PostSearch extends Post
             'business_profile_id' => $this->business_profile_id,
         ]);
 
-        $query->andFilterWhere(['ilike', 'bio', $this->bio])
-            ->andFilterWhere(['ilike', 'status', $this->status]);
+        $query->andFilterWhere(['like', 'bio', $this->bio])
+            ->andFilterWhere(['like', 'status', $this->status]);
 
         return $dataProvider;
     }

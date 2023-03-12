@@ -67,15 +67,15 @@ class BusinessProfileSearch extends BusinessProfile
             'city_id' => $this->city_id,
         ]);
 
-        $query->andFilterWhere(['ilike', 'name', $this->name])
-            ->andFilterWhere(['ilike', 'gender', $this->gender])
-            ->andFilterWhere(['ilike', 'ethnicity', $this->ethnicity])
-            ->andFilterWhere(['ilike', 'hair_color', $this->hair_color])
-            ->andFilterWhere(['ilike', 'eye_color', $this->eye_color])
-            ->andFilterWhere(['ilike', 'measurements', $this->measurements])
-            ->andFilterWhere(['ilike', 'affiliation', $this->affiliation])
-            ->andFilterWhere(['ilike', 'available_to', $this->available_to])
-            ->andFilterWhere(['ilike', 'aviability', $this->aviability]);
+        $query->andFilterWhere(['like', 'name', $this->name])
+            ->andFilterWhere(['like', 'gender', $this->gender])
+            ->andFilterWhere(['like', 'ethnicity', $this->ethnicity])
+            ->andFilterWhere(['like', 'hair_color', $this->hair_color])
+            ->andFilterWhere(['like', 'eye_color', $this->eye_color])
+            ->andFilterWhere(['like', 'measurements', $this->measurements])
+            ->andFilterWhere(['like', 'affiliation', $this->affiliation])
+            ->andFilterWhere(['like', 'available_to', $this->available_to])
+            ->andFilterWhere(['like', 'aviability', $this->aviability]);
 
         return $dataProvider;
     }

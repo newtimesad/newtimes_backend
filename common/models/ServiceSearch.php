@@ -63,7 +63,7 @@ class ServiceSearch extends Service
             'price' => $this->price,
         ]);
 
-        $query->andFilterWhere(['ilike', 'name', $this->name]);
+        $query->andFilterWhere(['like', 'name', $this->name]);
 
         return $dataProvider;
     }
