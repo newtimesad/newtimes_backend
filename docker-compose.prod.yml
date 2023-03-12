@@ -14,7 +14,7 @@ services:
   api:
 #    depends_on:
 #      - pgsql
-    container_name: api
+    container_name: api_luxury
     build: api
     expose:
       - 80
@@ -32,14 +32,14 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=proxy"
-      - "traefik.http.routers.api-secure.entrypoints=websecure"
-      - "traefik.http.routers.api-secure.rule=Host(`api.lexuryscort.com`)"
+      - "traefik.http.routers.apiluxury-secure.entrypoints=websecure"
+      - "traefik.http.routers.apiluxury-secure.rule=Host(`api.luxuryscorts.site`)"
 
 
   backend:
 #    depends_on:
 #      - pgsql
-    container_name: backend
+    container_name: backend_luxury
     build: backend
     expose:
       - 80
@@ -57,8 +57,8 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=proxy"
-      - "traefik.http.routers.backend-secure.entrypoints=websecure"
-      - "traefik.http.routers.backend-secure.rule=Host(`backend.lexuryscort.com`)"
+      - "traefik.http.routers.backendluxury-secure.entrypoints=websecure"
+      - "traefik.http.routers.backendluxury-secure.rule=Host(`dashboard.luxuryscorts.site`)"
 
 networks:
   proxy:
