@@ -58,7 +58,7 @@ services:
       - "traefik.enable=true"
       - "traefik.docker.network=proxy"
       - "traefik.http.routers.backendluxury-secure.entrypoints=websecure"
-      - "traefik.http.routers.backendluxury-secure.rule=Host(`dashboard.luxuryscorts.site`)"
+      - "traefik.http.routers.backendluxury-secure.rule=Host(`dash.luxuryscorts.site`)"
 
 networks:
   proxy:
